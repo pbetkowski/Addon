@@ -1,0 +1,35 @@
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\bin\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\bin\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\obj\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\obj\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\obj\Debug\Interop.SAPbobsCOM.dll
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness\PowerBusiness\obj\Debug\PowerBusiness.csproj.ResolveComReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\obj\Debug\Interop.SAPbobsCOM.dll
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\obj\Debug\PowerBusiness.csproj.ResolveComReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\obj\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\obj\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\bin\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\bin\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\PowerBusiness — kopia\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\obj\Debug\Interop.SAPbobsCOM.dll
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\obj\Debug\PowerBusiness.csproj.ResolveComReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\obj\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\obj\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\bin\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\bin\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\test\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\obj\Debug\Interop.SAPbobsCOM.dll
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\obj\Debug\PowerBusiness.csproj.ResolveComReference.cache
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\obj\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\obj\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\bin\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\bin\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\Nowy folder\Main\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache
+C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\Interop.SAPbobsCOM.dll
+C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\PowerBusiness.csproj.ResolveComReference.cache
+C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\PowerBusiness.exe
+C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\PowerBusiness.pdb
+C:\Przemek\Backup\Main\PowerBusiness\bin\Debug\PowerBusiness.exe
+C:\Przemek\Backup\Main\PowerBusiness\bin\Debug\PowerBusiness.pdb
+C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache

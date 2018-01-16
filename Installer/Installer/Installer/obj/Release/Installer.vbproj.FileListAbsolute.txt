@@ -1,0 +1,11 @@
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\bin\Installer.exe
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\bin\Installer.xml
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\AddOnInstaller.AddOnInstaller.BaseControl.resources
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\AddOnInstaller.AddOnInstaller.BaseForm.resources
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\AddOnInstaller.AddOnInstaller.InstallEndedControl.resources
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\AddOnInstaller.AddOnInstaller.InstallMainControl.resources
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\AddOnInstaller.AddOnInstaller.InstallPathControl.resources
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\AddOnInstaller.AddOnInstaller.UnInstallControl.resources
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\Installer.vbproj.GenerateResource.Cache
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\Installer.exe
+C:\Users\pbetkows\Desktop\Nowy folder\Main\Installer\Installer\Installer\obj\Release\Installer.xml
