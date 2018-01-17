@@ -26,17 +26,16 @@ namespace PowerBusiness
 
         }
 
-
-        public int countTotal(SAPbouiCOM.Grid Grid0, int colID)
+        //counting values of certain column
+        public Int32 countTotal(SAPbouiCOM.Grid Grid0, int colID)
         {
             int numberOfRows = Grid0.Rows.Count;
-            int total = 0;
-            String result = "";
+            Int32 total = 0;
 
             for (int i = 0; i < numberOfRows; i++)
-            {
-                int x =  (int) Grid0.DataTable.GetValue(colID, i);
-                total += x;
+            {   
+               Int32 currentValue = Convert.ToInt32(Grid0.DataTable.GetValue(colID, i));             
+               total += currentValue;
             }
 
             return total;

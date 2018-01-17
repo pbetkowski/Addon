@@ -9,6 +9,56 @@ namespace PowerBusiness
     [FormAttribute("PowerBusiness.Form1", "Form1.b1f")]
     class Form1 : UserFormBase
     {
+        private SAPbouiCOM.Grid Grid0;
+        private SAPbouiCOM.EditText Edit1;
+        private SAPbouiCOM.StaticText StaticText0;
+        private SAPbouiCOM.EditText Edit2;
+        private SAPbouiCOM.StaticText StaticText1;
+        private SAPbouiCOM.StaticText StaticText2;
+        private SAPbouiCOM.EditText Edit3;
+        private SAPbouiCOM.StaticText StaticText3;
+        private SAPbouiCOM.EditText Edit4;
+        private SAPbouiCOM.StaticText StaticText4;
+        private SAPbouiCOM.EditText Edit5;
+        private SAPbouiCOM.StaticText StaticText5;
+        private SAPbouiCOM.EditText Edit6;
+        private SAPbouiCOM.StaticText StaticText6;
+        private SAPbouiCOM.EditText Edit7;
+        private SAPbouiCOM.StaticText StaticText7;
+        private SAPbouiCOM.EditText Edit8;
+        private SAPbouiCOM.Button FillTableButton;
+        private SAPbouiCOM.Button RefreshButton;
+        private SAPbouiCOM.ComboBox ComboBox0;
+        private SAPbouiCOM.StaticText StaticText8;
+        private SAPbouiCOM.StaticText StaticText9;
+        private SAPbouiCOM.Grid Grid1;
+        private SAPbouiCOM.StaticText StaticText10;
+        private SAPbouiCOM.EditText Edit0;
+        private SAPbouiCOM.LinkedButton LinkedButton0;
+        private SAPbouiCOM.StaticText StaticText11;
+        private SAPbouiCOM.Button Button2;
+        private SAPbouiCOM.Button HelpButton;
+        private SAPbouiCOM.Button CloseButton;
+        private SAPbouiCOM.Button CountButton;
+        private SAPbouiCOM.Form form;
+
+        SqlClass SqlExecutor = new SqlClass();
+        ComponentManipulation CM_Obj = new ComponentManipulation();
+        Counter cntObj = new Counter();
+        String dynamicColumnName;
+        String SecondPar;
+        String par1;
+        String par2;
+        String par3;
+        String par4;
+        String par5;
+        String par6;
+        String par7;
+        String par8;
+        Boolean isColored;
+        Boolean isSorted;
+        List<SAPbouiCOM.EditText> listOfEditText;
+
         public Form1()
         {
         }
@@ -61,11 +111,15 @@ namespace PowerBusiness
             this.StaticText11 = ((SAPbouiCOM.StaticText)(this.GetItem("Item_26").Specific));
             this.Button2 = ((SAPbouiCOM.Button)(this.GetItem("Item_27").Specific));
             this.Button2.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button2_ClickBefore);
-            this.Button3 = ((SAPbouiCOM.Button)(this.GetItem("Item_28").Specific));
-            this.Button3.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button3_ClickBefore);
+            this.HelpButton = ((SAPbouiCOM.Button)(this.GetItem("Item_28").Specific));
+            this.HelpButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.HelpButton_ClickBefore);
+            this.listOfEditText = this.CM_Obj.addItemsToList(this.Edit0, this.Edit1, this.Edit3, this.Edit4, this.Edit5, this.Edit6, this.Edit7, this.Edit8);
+            this.CloseButton = ((SAPbouiCOM.Button)(this.GetItem("Item_29").Specific));
+            this.CloseButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.CloseApplication);
+            this.CountButton = ((SAPbouiCOM.Button)(this.GetItem("Item_31").Specific));
+            this.CountButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.CountTotal);
+            this.GetItem("Item_31").Visible = false;
             this.OnCustomInitialize();
-
-
 
         }
 
@@ -84,52 +138,7 @@ namespace PowerBusiness
 
         }
 
-        private SAPbouiCOM.Grid Grid0;
-        private SAPbouiCOM.EditText Edit1;
-        private SAPbouiCOM.StaticText StaticText0;
-        private SAPbouiCOM.EditText Edit2;
-        private SAPbouiCOM.StaticText StaticText1;
-        private SAPbouiCOM.StaticText StaticText2;
-        private SAPbouiCOM.EditText Edit3;
-        private SAPbouiCOM.StaticText StaticText3;
-        private SAPbouiCOM.EditText Edit4;
-        private SAPbouiCOM.StaticText StaticText4;
-        private SAPbouiCOM.EditText Edit5;
-        private SAPbouiCOM.StaticText StaticText5;
-        private SAPbouiCOM.EditText Edit6;
-        private SAPbouiCOM.StaticText StaticText6;
-        private SAPbouiCOM.EditText Edit7;
-        private SAPbouiCOM.StaticText StaticText7;
-        private SAPbouiCOM.EditText Edit8;
-        private SAPbouiCOM.Button FillTableButton;
-        private SAPbouiCOM.Button RefreshButton;
-        private SAPbouiCOM.ComboBox ComboBox0;
-        private SAPbouiCOM.StaticText StaticText8;
-        private SAPbouiCOM.StaticText StaticText9;
-        private SAPbouiCOM.Grid Grid1;
-        private SAPbouiCOM.StaticText StaticText10;
-        private SAPbouiCOM.EditText Edit0;
-        private SAPbouiCOM.LinkedButton LinkedButton0;
-        private SAPbouiCOM.StaticText StaticText11;
-        private SAPbouiCOM.Button Button2;
-        private SAPbouiCOM.Button Button3;
-        private SAPbouiCOM.Form form;
 
-        SqlClass SqlExecutor = new SqlClass();
-        ComponentManipulation CM_Obj = new ComponentManipulation();
-        Counter cntObj = new Counter();
-        String dynamicColumnName;
-        String SecondPar;
-        String par1;
-        String par2;
-        String par3;
-        String par4;
-        String par5;
-        String par6;
-        String par7;
-        String par8;
-        Boolean isColored;
-        Boolean isSorted;
 
         //get value from the EditText
         private void InitializeVariables()
@@ -154,13 +163,12 @@ namespace PowerBusiness
 
             try
             {
-                CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
-                CM_Obj.cleanRows(Grid0);
+                CM_Obj.checkIfItemValueIsNull(listOfEditText);
             }
 
-            catch (Exception)
+            catch (Exception e)
             {
-                Application.SBO_Application.MessageBox("Błąd przy odświeżaniu tabeli.");
+                Application.SBO_Application.MessageBox(e.Message);
             }
 
         }
@@ -170,23 +178,26 @@ namespace PowerBusiness
             try
             {
                 cntObj.getDate(StaticText11);
-                CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                CM_Obj.checkIfItemValueIsNull(listOfEditText);
+              
                 InitializeVariables();
 
 
 
-                //if (isColored == true)
-                //{   //TODO spowalnia 
-                //    CM_Obj.cleanRows(Grid0);
-                //}
+                if (isColored == true)
+                {   //TODO spowalnia 
+                    CM_Obj.cleanRows(Grid0);
+                }
 
 
                 if (ComboBox0.Selected.Description == "1")
                 {
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Numer gotowy", "Opis", "Magazyn", "Lokalizacja", "Kod kreskowy", "Partia klienta");
                     CM_Obj.changeMainLabel(StaticText8, "Stany na lokalizacjach");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.loadDataIntoTable(form, Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
+                    this.GetItem("Item_31").Visible = true;
+                    
 
 
                 }
@@ -195,17 +206,18 @@ namespace PowerBusiness
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Nieprzelokalizowane detale");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Klient", "Magazyn", "Lokalizacja", "Kod kreskowy", "N/D", "N/D");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.detailsOnSP(form, Grid0, par1, par2, par3, par4, par5, par6);
-                    // item.Visible = false;
+                    this.GetItem("Item_31").Visible = false;
                 }
 
                 else if (ComboBox0.Selected.Description == "3")
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Stany po numerze surowym");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer surowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.u_DrawNoRawSumRaport(form, Grid0, par1, par2, par3);
+                    this.GetItem("Item_31").Visible = false;
 
                 }
 
@@ -213,8 +225,9 @@ namespace PowerBusiness
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Stany po numerze gotowym");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer gotowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.u_DrawNoFinalSumRaport(form, Grid0, par1, par2, par3);
+                    this.GetItem("Item_31").Visible = false;
 
 
                 }
@@ -223,9 +236,10 @@ namespace PowerBusiness
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Zamówienia działu zakupów");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Waluta", "Uwagi", "Status", "Odział", "N/D", "N/D");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.purchaseOrdersRapport(form, Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
+                    this.GetItem("Item_31").Visible = false;
                     isColored = true;
 
                 }
@@ -234,9 +248,10 @@ namespace PowerBusiness
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Zamówienia magazynu chemicznego");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Status", "Waluta", "Uwagi", "Odział", "N/D", "N/D");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.chemicalOrdersReport(form, Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsChemicalOrders(Grid0, 3);
+                    this.GetItem("Item_31").Visible = false;
                     isColored = true;
 
                 }
@@ -245,9 +260,10 @@ namespace PowerBusiness
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Gospodarka materiałowa");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Klient", "Indeks", "Numer gotowy", "Opis", "Stan", "N/D", "N/D", "N/D");
-                    CM_Obj.resetTable(Edit1, Edit2, Edit3, Edit4, Edit5, Edit6, Edit7, Edit8);
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.chemicalStocks(form, Grid0, par1, par2, par3, par4, par5);
                     CM_Obj.fillWithColorsChemicalStock(Grid0, 8);
+                    this.GetItem("Item_31").Visible = false;
                     isColored = true;
 
 
@@ -294,9 +310,9 @@ namespace PowerBusiness
 
             }
 
-            catch (Exception)
+            catch (Exception e)
             {
-
+                Application.SBO_Application.MessageBox(e.Message);
             }
 
         }
@@ -395,7 +411,7 @@ namespace PowerBusiness
                 {
 
                     SqlExecutor.loadDataIntoTable(form, Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
-                    //  Application.SBO_Application.MessageBox(Grid0.DataTable.Rows.Count.ToString());
+
                 }
 
                 else if (ComboBox0.Selected.Description == "2") //nieprzelokalizowane detale
@@ -445,33 +461,43 @@ namespace PowerBusiness
             BubbleEvent = true;
             try
             {
-                SAPbouiCOM.GridColumn column;
-                column = Grid0.Columns.Item(dynamicColumnName);
-                column.TitleObject.Sortable = true;
-                Grid0.Columns.Item(dynamicColumnName).TitleObject.Sort(SAPbouiCOM.BoGridSortType.gst_Ascending);
-
                 //Grid0.Columns.Item("Indeks").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
+                Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
             }
 
-            catch (Exception)
+            catch (Exception e)
             {
-                Application.SBO_Application.MessageBox("W fazie testów");
+                Application.SBO_Application.MessageBox(e.Message);
             }
 
         }
 
-        private void Button3_ClickBefore(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
+        private void HelpButton_ClickBefore(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
         {
             BubbleEvent = true;
-            // Application.SBO_Application.Forms.Item("ff").Close();
-            // Application.SBO_Application.MessageBox(Grid0.DataTable.GetValue(8, 2).ToString());
-            Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 9).ToString());
+            String msg1 = "Wartość zaznaczonej komórki zostaje automatycznie skopiowana." + "\n";
+            String msg2 = "Kliknięcie 2 razy w wybrany filtr wklei wartość skopiowanej wcześniej komórki." + "\n";
+            String msg3 = "Kliknięcie 2 razy na dowolną komórkę w określonej kolumnie posortuje ją." + "\n";
+
+            Application.SBO_Application.MessageBox(msg1 + msg2 + msg3);
 
         }
 
+        
 
+        private void CloseApplication(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            BubbleEvent = true;
+            CM_Obj.closeApplication();
+        }
 
+        
 
+        private void CountTotal(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
+        {
+            BubbleEvent = true;
+            Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
 
+        }
     }
 }

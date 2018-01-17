@@ -26,28 +26,13 @@ namespace PowerBusiness
             StaticText4.Caption = par5;
             StaticText5.Caption = par6;
             StaticText6.Caption = par7;
-            StaticText7.Caption = par8;
-           
+            StaticText7.Caption = par8;          
         }
 
 
         public void changeMainLabel(SAPbouiCOM.StaticText MainLabel, String Name)
         {
-            MainLabel.Caption = Name;
-        
-        }
-
-        public void resetTable(SAPbouiCOM.EditText editText1, SAPbouiCOM.EditText editText2, SAPbouiCOM.EditText editText3, SAPbouiCOM.EditText editText4, SAPbouiCOM.EditText editText5, SAPbouiCOM.EditText editText6, SAPbouiCOM.EditText editText7, SAPbouiCOM.EditText editText8)
-        {
-            editText1.String = "";
-            editText2.String = "";
-            editText3.String = "";
-            editText4.String = "";
-            editText5.String = "";
-            editText6.String = "";
-            editText7.String = "";
-            editText8.String = "";
-
+            MainLabel.Caption = Name;      
         }
 
          // painting grid for purchase_department
@@ -182,12 +167,49 @@ namespace PowerBusiness
         {
             int numberOfRows = gridPanel.Rows.Count;
             for (int i = 1; i < numberOfRows; i++ )
-            {
+            {   
+                
                 gridPanel.CommonSetting.SetRowBackColor(i,white);
             }
         }
 
-       
 
+         //inicjalizacja listy
+
+
+        public List<SAPbouiCOM.EditText> addItemsToList(SAPbouiCOM.EditText e1, SAPbouiCOM.EditText e2, SAPbouiCOM.EditText e3, SAPbouiCOM.EditText e4, SAPbouiCOM.EditText e5, SAPbouiCOM.EditText e6, SAPbouiCOM.EditText e7, SAPbouiCOM.EditText e8)
+        {
+            List<SAPbouiCOM.EditText> list = new List<SAPbouiCOM.EditText>();
+            list.Add(e1);
+            list.Add(e2);
+            list.Add(e3);
+            list.Add(e4);
+            list.Add(e5);
+            list.Add(e6);
+            list.Add(e7);
+            list.Add(e8);
+            return list;
+        }
+
+
+        public void checkIfItemValueIsNull(List<SAPbouiCOM.EditText> list)
+        {
+            foreach (var item in list)
+            {
+                if (!String.IsNullOrEmpty(item.String))
+                {
+                    item.String = String.Empty;
+                }
+            }
+        }
+
+
+        //closing
+
+
+        public void closeApplication()
+        {
+            Application.SBO_Application.Forms.Item("ff").Close();
+        }
     }
 }
