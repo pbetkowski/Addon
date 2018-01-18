@@ -10,9 +10,10 @@ namespace PowerBusiness
 
         long temporaryID;
         private SAPbouiCOM.DataTable dataTable;
+        SAPbouiCOM.Form form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
 
          //stare stany na lokalizacjach
-        public void loadDataIntoTable(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal, String ItemName, String WhsCode, String Localization, String DistNumber, String SuppNumber)
+        public void loadDataIntoTable(SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal, String ItemName, String WhsCode, String Localization, String DistNumber, String SuppNumber)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -279,7 +280,7 @@ namespace PowerBusiness
 
      
          //nieprzelokalizowane detale
-        public void detailsOnSP(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String Client , String WhsCode, String Localization, String DistNumber)
+        public void detailsOnSP(SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String Client , String WhsCode, String Localization, String DistNumber)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -307,7 +308,7 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
 
-        public void u_DrawNoRawSumRaport(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String U_DrawNoRaw, String ItemName, String Client)
+        public void u_DrawNoRawSumRaport(SAPbouiCOM.Grid gridPanel, String U_DrawNoRaw, String ItemName, String Client)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -327,7 +328,7 @@ namespace PowerBusiness
         }
 
          //stany dla numeru gotowego
-        public void u_DrawNoFinalSumRaport(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String U_DrawNoFinal, String ItemName, String Client)
+        public void u_DrawNoFinalSumRaport(SAPbouiCOM.Grid gridPanel, String U_DrawNoFinal, String ItemName, String Client)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -348,27 +349,27 @@ namespace PowerBusiness
         }
 
          //stany dla danego numeru surowego
-        public void fillSecondGridDefault(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String U_DrawNoRaw)
+        public void fillSecondGridDefault(SAPbouiCOM.Grid gridPanel, String U_DrawNoRaw)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
             dataTable.ExecuteQuery("SELECT DISTINCT\n" +
-           "IFNULL (t0.\"U_DrawNoRaw\", 'Brak rysunku') \"Surowy\",\n" +
+           "IFNULL (t0.\"U_DrawNoFinal\", 'Brak rysunku') \"Gotowy\",\n" +
            "t0.\"ItemName\" \"Opis\",\n" +
            "SUM (t0.\"OnHand\") AS \"Ilość\",\n" +
            "RIGHT (t1.\"CardCode\", 5) \"Logo\",\n" +
            "t1.\"CardName\" \"Klient\"\n" +
            "FROM OITM t0\n" +
            "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\", 4, 5) = RIGHT (t1.\"CardCode\", 5)\n" +
-           "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoRaw\" LIKE '" + U_DrawNoRaw + "' \n" +
-           "GROUP BY t0.\"U_DrawNoRaw\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
+           "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '" + U_DrawNoRaw + "' \n" +
+           "GROUP BY t0.\"U_DrawNoFinal\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
             gridPanel.DataTable = dataTable;
           
         }
          //szczegóły zamówień
-        public void fillSecondGridPurchase(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String OrderNumber)
+        public void fillSecondGridPurchase(SAPbouiCOM.Grid gridPanel, String OrderNumber)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -388,7 +389,7 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
          //zamówienia działu zakupów
-        public void purchaseOrdersRapport(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Currency, String Comments, String Status, String Branch)
+        public void purchaseOrdersRapport(SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Currency, String Comments, String Status, String Branch)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -403,17 +404,18 @@ namespace PowerBusiness
             "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
             "t0.\"DocCur\" \"Waluta\",\n" +
             "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
-            "(CASE WHEN (t0.\"U_Status_Zam\" = '1') THEN 'Zlecenie wewnętrzne'\n" +
+            "(CASE WHEN (t0.\"U_Status_Zam\" = '1') THEN 'Nowe zamówienie'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '2') THEN 'Dyr_Zakładu'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '3') THEN 'Dyr_Zak/Log'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '4') THEN 'Dyr_Finansowy'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '5') THEN 'Zarząd'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'W toku'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zrealizowane'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'Realizacja częściowa'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Archiwum'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zablokowane'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'OK' \n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'OK'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zablokowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'W toku'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Realizacja częściowa'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zrealizowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'Faktura'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '12') THEN 'Archiwum' \n" +
             "END) AS \"Status\",\n" +
             "\n" +
             "t0.\"BPLName\" \"Oddział\",\n" +
@@ -456,13 +458,13 @@ namespace PowerBusiness
             "FROM TEMP t1 \n" +
             "INNER JOIN TEMP2 t2 on t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
-            "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '"+OrderNumber+"%' AND table.\"Dostawca\" LIKE '%"+Supplier+"%' AND table.\"Waluta\" LIKE '%"+Currency+"%' AND IFNULL (\"Uwagi\", '1') LIKE '%"+Comments+"%' AND table.\"Status\" LIKE '%"+Status+"%' AND table.\"Oddział\" LIKE '%"+Branch+"%'");
+            "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '"+OrderNumber+"%' AND table.\"Dostawca\" LIKE '%"+Supplier+"%' AND table.\"Waluta\" LIKE '%"+Currency+"%' AND IFNULL (\"Uwagi\", '1') LIKE '%"+Comments+"%' AND IFNULL (\"Status\", '1') LIKE '%"+Status+"%' AND table.\"Oddział\" LIKE '%"+Branch+"%'");
             gridPanel.DataTable = dataTable;
                       
         }
 
          //zamówienia magazynu chemicznego
-        public void chemicalOrdersReport(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Status, String Currency, String Comments, String Branch)
+        public void chemicalOrdersReport(SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Status, String Currency, String Comments, String Branch)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -530,7 +532,7 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
 
-        public void fillSecondGridWitchChemicalDetails(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String OrderNumber)
+        public void fillSecondGridWitchChemicalDetails(SAPbouiCOM.Grid gridPanel, String OrderNumber)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -551,7 +553,7 @@ namespace PowerBusiness
         }
 
 
-        public void chemicalStocks (SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description, String State)
+        public void chemicalStocks (SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description, String State)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -598,7 +600,7 @@ namespace PowerBusiness
         }
 
 
-        public void fillSecondGridWitchChemicalStocks(SAPbouiCOM.Form form, SAPbouiCOM.Grid gridPanel, String U_DrawNoFinal)
+        public void fillSecondGridWitchChemicalStocks(SAPbouiCOM.Grid gridPanel, String U_DrawNoFinal)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -614,6 +616,32 @@ namespace PowerBusiness
             "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\", 4, 5) = RIGHT (t1.\"CardCode\", 5)\n" +
             "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '"+U_DrawNoFinal+"'\n" +
             "GROUP BY t0.\"U_DrawNoFinal\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
+            gridPanel.DataTable = dataTable;
+        }
+
+
+         //sumaryczna ilość dostarczonych wyrobów
+        public void sqlaTotalReport(SAPbouiCOM.Grid gridPanel)
+        {
+            temporaryID = base.setRandom();
+            form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
+            dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
+            temporaryID++;
+            dataTable.ExecuteQuery("SELECT DISTINCT \n" +
+            "t2.\"CardName\" \"Dostawca\",\n" +
+            "RIGHT (t3.\"CardCode\", 5) \"Logo\",\n" +
+            "SUM (t1.\"Quantity\") \"Ilość za wskazany okres\",\n" +
+            "t1.\"Dscription\" \"Opis\",\n" +
+            "t1.\"ItemCode\" \"Indeks\",\n" +
+            "t4.\"U_DrawNoRaw\" \"Surowy\",\n" +
+            "t4.\"U_DrawNoFinal\" \"Gotowy\"\n" +
+            "--t1.\"DocDate\"\n" +
+            "FROM POR1 T1\t\n" +
+            "INNER JOIN OPOR t2 ON t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
+            "INNER JOIN OCRD t3 ON t2.\"CardCode\" = t3.\"CardCode\"\n" +
+            "INNER JOIN OITM t4 ON t1.\"ItemCode\" = t4.\"ItemCode\"\n" +
+            "WHERE t1.\"ItemCode\" NOT LIKE 'ZAM' AND t1.\"ItemCode\" NOT LIKE '#' AND t2.\"DocDate\" BETWEEN '2017-01-01 00:00:00.0'  AND '2018-01-12 00:00:00.0'-- AND t1.\"Dscription\" LIKE 'FAPROXYD 620 CZARNA PŁM.RAL 9005'\n" +
+            "GROUP BY \"Dscription\", t1.\"ItemCode\", t4.\"U_DrawNoFinal\", t4.\"U_DrawNoRaw\",t2.\"CardName\", t3.\"CardCode\"");
             gridPanel.DataTable = dataTable;
         }
 

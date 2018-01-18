@@ -195,7 +195,7 @@ namespace PowerBusiness
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Numer gotowy", "Opis", "Magazyn", "Lokalizacja", "Kod kreskowy", "Partia klienta");
                     CM_Obj.changeMainLabel(StaticText8, "Stany na lokalizacjach");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.loadDataIntoTable(form, Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
+                    SqlExecutor.loadDataIntoTable(Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
                     this.GetItem("Item_31").Visible = true;
                     
 
@@ -207,7 +207,7 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Nieprzelokalizowane detale");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Klient", "Magazyn", "Lokalizacja", "Kod kreskowy", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.detailsOnSP(form, Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.detailsOnSP(Grid0, par1, par2, par3, par4, par5, par6);
                     this.GetItem("Item_31").Visible = false;
                 }
 
@@ -216,7 +216,7 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Stany po numerze surowym");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer surowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.u_DrawNoRawSumRaport(form, Grid0, par1, par2, par3);
+                    SqlExecutor.u_DrawNoRawSumRaport(Grid0, par1, par2, par3);
                     this.GetItem("Item_31").Visible = false;
 
                 }
@@ -226,7 +226,7 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Stany po numerze gotowym");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer gotowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.u_DrawNoFinalSumRaport(form, Grid0, par1, par2, par3);
+                    SqlExecutor.u_DrawNoFinalSumRaport(Grid0, par1, par2, par3);
                     this.GetItem("Item_31").Visible = false;
 
 
@@ -237,7 +237,7 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Zamówienia działu zakupów");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Waluta", "Uwagi", "Status", "Odział", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.purchaseOrdersRapport(form, Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
                     this.GetItem("Item_31").Visible = false;
                     isColored = true;
@@ -249,7 +249,7 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Zamówienia magazynu chemicznego");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Status", "Waluta", "Uwagi", "Odział", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.chemicalOrdersReport(form, Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsChemicalOrders(Grid0, 3);
                     this.GetItem("Item_31").Visible = false;
                     isColored = true;
@@ -261,12 +261,19 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Gospodarka materiałowa");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Klient", "Indeks", "Numer gotowy", "Opis", "Stan", "N/D", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.chemicalStocks(form, Grid0, par1, par2, par3, par4, par5);
+                    SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4, par5);
                     CM_Obj.fillWithColorsChemicalStock(Grid0, 8);
                     this.GetItem("Item_31").Visible = false;
                     isColored = true;
+                }
 
-
+                else if (ComboBox0.Selected.Description == "9")
+                {
+                    CM_Obj.changeMainLabel(StaticText8, "Sumaryczny raport dostarczonych wyrobów");
+                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Dostawca", "Logo", "Opis", "Indeks", "Surowy", "Gotowy", "N/D", "N/D");
+                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                    SqlExecutor.sqlaTotalReport(Grid0);
+                    this.GetItem("Item_31").Visible = false;        
                 }
             }
 
@@ -288,23 +295,23 @@ namespace PowerBusiness
                 SecondPar = Grid0.DataTable.GetValue(pVal.ColUID, index).ToString();  //get the specified col/row value
                 if (ComboBox0.Selected.Description == "5")
                 {
-                    SqlExecutor.fillSecondGridPurchase(form, Grid1, SecondPar);
+                    SqlExecutor.fillSecondGridPurchase(Grid1, SecondPar);
                 }
 
                 else if (ComboBox0.Selected.Description == "6")
                 {
 
-                    SqlExecutor.fillSecondGridWitchChemicalDetails(form, Grid1, SecondPar);
+                    SqlExecutor.fillSecondGridWitchChemicalDetails(Grid1, SecondPar);
                 }
 
                 else if (ComboBox0.Selected.Description == "7")
                 {
-                    SqlExecutor.fillSecondGridWitchChemicalStocks(form, Grid1, SecondPar);
+                    SqlExecutor.fillSecondGridWitchChemicalStocks(Grid1, SecondPar);
                 }
 
                 else
                 {
-                    SqlExecutor.fillSecondGridDefault(form, Grid1, SecondPar);
+                    SqlExecutor.fillSecondGridDefault(Grid1, SecondPar);
                 }
 
 
@@ -410,41 +417,47 @@ namespace PowerBusiness
                 if (ComboBox0.Selected.Description == "1")  //1 if "stany na lokalizacjach"
                 {
 
-                    SqlExecutor.loadDataIntoTable(form, Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
+                    SqlExecutor.loadDataIntoTable(Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
 
                 }
 
                 else if (ComboBox0.Selected.Description == "2") //nieprzelokalizowane detale
                 {
-                    SqlExecutor.detailsOnSP(form, Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.detailsOnSP(Grid0, par1, par2, par3, par4, par5, par6);
                 }
 
                 else if (ComboBox0.Selected.Description == "3")  //stany po numerze surowym
                 {
-                    SqlExecutor.u_DrawNoRawSumRaport(form, Grid0, par1, par2, par3);
+                    SqlExecutor.u_DrawNoRawSumRaport(Grid0, par1, par2, par3);
                 }
 
                 else if (ComboBox0.Selected.Description == "4")  //stany po numerze gotowym
                 {
-                    SqlExecutor.u_DrawNoFinalSumRaport(form, Grid0, par1, par2, par3);
+                    SqlExecutor.u_DrawNoFinalSumRaport(Grid0, par1, par2, par3);
                 }
 
                 else if (ComboBox0.Selected.Description == "5")  //lista zamówień
                 {
-                    SqlExecutor.purchaseOrdersRapport(form, Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
 
                 }
 
                 else if (ComboBox0.Selected.Description == "6")  //lista zamówień magazynu chemicznego
                 {
-                    SqlExecutor.chemicalOrdersReport(form, Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsChemicalOrders(Grid0, 3);
                 }
 
                 else if (ComboBox0.Selected.Description == "7")  //gospodarka materiałowa
                 {
-                    SqlExecutor.chemicalStocks(form, Grid0, par1, par2, par3, par4, par5);
+                    SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4, par5);
+
+                }
+
+                else if (ComboBox0.Selected.Description == "9")  //sqa1
+                {
+                    SqlExecutor.sqlaTotalReport(Grid0);
 
                 }
             }
