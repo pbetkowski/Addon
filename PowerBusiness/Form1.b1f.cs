@@ -272,7 +272,7 @@ namespace PowerBusiness
                     CM_Obj.changeMainLabel(StaticText8, "Sumaryczny raport dostarczonych wyrobów");
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Dostawca", "Logo", "Opis", "Indeks", "Surowy", "Gotowy", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.sqlaTotalReport(Grid0);
+                    SqlExecutor.sqlaTotalReport(Grid0, par1, par2, par3, par4, par5, par6);
                     this.GetItem("Item_31").Visible = false;        
                 }
             }
@@ -457,7 +457,7 @@ namespace PowerBusiness
 
                 else if (ComboBox0.Selected.Description == "9")  //sqa1
                 {
-                    SqlExecutor.sqlaTotalReport(Grid0);
+                    SqlExecutor.sqlaTotalReport(Grid0, par1, par2, par3, par4, par5, par6);
 
                 }
             }

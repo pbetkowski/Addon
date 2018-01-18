@@ -621,7 +621,7 @@ namespace PowerBusiness
 
 
          //sumaryczna ilość dostarczonych wyrobów
-        public void sqlaTotalReport(SAPbouiCOM.Grid gridPanel)
+        public void sqlaTotalReport(SAPbouiCOM.Grid gridPanel, String CardCode, String Logo, String Description, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -640,7 +640,7 @@ namespace PowerBusiness
             "INNER JOIN OPOR t2 ON t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "INNER JOIN OCRD t3 ON t2.\"CardCode\" = t3.\"CardCode\"\n" +
             "INNER JOIN OITM t4 ON t1.\"ItemCode\" = t4.\"ItemCode\"\n" +
-            "WHERE t1.\"ItemCode\" NOT LIKE 'ZAM' AND t1.\"ItemCode\" NOT LIKE '#' AND t2.\"DocDate\" BETWEEN '2017-01-01 00:00:00.0'  AND '2018-01-12 00:00:00.0'-- AND t1.\"Dscription\" LIKE 'FAPROXYD 620 CZARNA PŁM.RAL 9005'\n" +
+            "WHERE t1.\"ItemCode\" NOT LIKE 'ZAM' AND t1.\"ItemCode\" NOT LIKE '#' AND t2.\"CardName\" LIKE '%" + CardCode + "%' AND RIGHT (t3.\"CardCode\", 5) LIKE '%" + Logo + "%' AND t1.\"Dscription\" LIKE '%" + Description + "%' AND t1.\"ItemCode\" LIKE '%" + ItemCode + "%' AND IFNULL (t4.\"U_DrawNoRaw\", '1') LIKE '%" + U_DrawNoRaw + "%' AND IFNULL (t4.\"U_DrawNoFinal\", '1') LIKE '%"+U_DrawNoFinal+"%' AND t2.\"DocDate\" BETWEEN '2017-01-01 00:00:00.0'  AND '2018-01-12 00:00:00.0'-- AND t1.\"Dscription\" LIKE 'FAPROXYD 620 CZARNA PŁM.RAL 9005'\n" +
             "GROUP BY \"Dscription\", t1.\"ItemCode\", t4.\"U_DrawNoFinal\", t4.\"U_DrawNoRaw\",t2.\"CardName\", t3.\"CardCode\"");
             gridPanel.DataTable = dataTable;
         }

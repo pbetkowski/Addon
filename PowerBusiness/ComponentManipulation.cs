@@ -48,36 +48,66 @@ namespace PowerBusiness
                     //double columnValue = Double.Parse(gridPanel.DataTable.GetValue(columnIndex, i).ToString());
                     String columnvalue = gridPanel.DataTable.GetValue(columnIndex, i).ToString();
 
-                    if (columnvalue.Equals("Zlecenie wewnętrzne"))
+                    if (columnvalue.Equals("Nowe zamówienie"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i+1, red);
 
                     }
 
-                    else if (columnvalue.Equals("Dyr_Zak/Log"))
+                    else if (columnvalue.Equals("Dyr_Zakładu"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, orange);
 
                     }
 
-                    else if (columnvalue.Equals("OK"))
+                    else if (columnvalue.Equals("Dyr_Zak/Log"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
                     }
 
-                    else if (columnvalue.Equals("Zarząd"))
+                    else if (columnvalue.Equals("Dyr_Finansowy"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, sea);
                     }
 
-                    else if (columnvalue.Equals("Zrealizowane"))
+                    else if (columnvalue.Equals("Zarząd"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, yellow);
                     }
 
-                    else if (columnvalue.Equals("Dyr_Zakładu"))
+                    else if (columnvalue.Equals("OK"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i+1, blue);
+                    }
+
+                    else if (columnvalue.Equals("Zablokowane"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                    }
+
+                    else if (columnvalue.Equals("W toku"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                    }
+
+                    else if (columnvalue.Equals("Realizacja częściowa"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                    }
+
+                    else if (columnvalue.Equals("Zrealizowane"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                    }
+
+                    else if (columnvalue.Equals("Faktura"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                    }
+
+                    else if (columnvalue.Equals("Zablokowane"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
                     }
                
 

@@ -31,7 +31,7 @@ namespace PowerBusiness
                 //  If the manu already exists this code will fail
                 oMenus.AddEx(oCreationPackage);
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -48,7 +48,7 @@ namespace PowerBusiness
                 oCreationPackage.String = "System raportów";
                 oMenus.AddEx(oCreationPackage);
             }
-            catch (Exception er)
+            catch (Exception)
             { //  Menu already exists
                 Application.SBO_Application.StatusBar.SetText("Nadpisano strukturę menu.", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Success);
             }
