@@ -620,8 +620,34 @@ namespace PowerBusiness
         }
 
 
-         //sumaryczna ilość dostarczonych wyrobów
-        public void sqlaTotalReport(SAPbouiCOM.Grid gridPanel, String CardCode, String Logo, String Description, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal)
+         //do skasowania później
+        //public void sqlaTotalReport(SAPbouiCOM.Grid gridPanel, String CardCode, String Logo, String Description, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal)
+        //{
+        //    temporaryID = base.setRandom();
+        //    form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
+        //    dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
+        //    temporaryID++;
+        //    dataTable.ExecuteQuery("SELECT DISTINCT \n" +
+        //    "t2.\"CardName\" \"Dostawca\",\n" +
+        //    "RIGHT (t3.\"CardCode\", 5) \"Logo\",\n" +
+        //    "SUM (t1.\"Quantity\") \"Ilość za wskazany okres\",\n" +
+        //    "t1.\"Dscription\" \"Opis\",\n" +
+        //    "t1.\"ItemCode\" \"Indeks\",\n" +
+        //    "t4.\"U_DrawNoRaw\" \"Surowy\",\n" +
+        //    "t4.\"U_DrawNoFinal\" \"Gotowy\"\n" +
+        //    "--t1.\"DocDate\"\n" +
+        //    "FROM POR1 T1\t\n" +
+        //    "INNER JOIN OPOR t2 ON t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
+        //    "INNER JOIN OCRD t3 ON t2.\"CardCode\" = t3.\"CardCode\"\n" +
+        //    "INNER JOIN OITM t4 ON t1.\"ItemCode\" = t4.\"ItemCode\"\n" +
+        //    "WHERE t1.\"ItemCode\" NOT LIKE 'ZAM' AND t1.\"ItemCode\" NOT LIKE '#' AND t2.\"CardName\" LIKE '%" + CardCode + "%' AND RIGHT (t3.\"CardCode\", 5) LIKE '%" + Logo + "%' AND t1.\"Dscription\" LIKE '%" + Description + "%' AND t1.\"ItemCode\" LIKE '%" + ItemCode + "%' AND IFNULL (t4.\"U_DrawNoRaw\", '1') LIKE '%" + U_DrawNoRaw + "%' AND IFNULL (t4.\"U_DrawNoFinal\", '1') LIKE '%"+U_DrawNoFinal+"%' AND t2.\"DocDate\" BETWEEN '2017-01-01 00:00:00.0'  AND '2018-01-12 00:00:00.0'-- AND t1.\"Dscription\" LIKE 'FAPROXYD 620 CZARNA PŁM.RAL 9005'\n" +
+        //    "GROUP BY \"Dscription\", t1.\"ItemCode\", t4.\"U_DrawNoFinal\", t4.\"U_DrawNoRaw\",t2.\"CardName\", t3.\"CardCode\"");
+        //    gridPanel.DataTable = dataTable;
+        //}
+
+
+        public void sqaDeliveredTotal(SAPbouiCOM.Grid gridPanel, String CardName, String Logo, String DateFrom, String DateTo)
+
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -630,18 +656,27 @@ namespace PowerBusiness
             dataTable.ExecuteQuery("SELECT DISTINCT \n" +
             "t2.\"CardName\" \"Dostawca\",\n" +
             "RIGHT (t3.\"CardCode\", 5) \"Logo\",\n" +
-            "SUM (t1.\"Quantity\") \"Ilość za wskazany okres\",\n" +
-            "t1.\"Dscription\" \"Opis\",\n" +
-            "t1.\"ItemCode\" \"Indeks\",\n" +
-            "t4.\"U_DrawNoRaw\" \"Surowy\",\n" +
-            "t4.\"U_DrawNoFinal\" \"Gotowy\"\n" +
-            "--t1.\"DocDate\"\n" +
-            "FROM POR1 T1\t\n" +
-            "INNER JOIN OPOR t2 ON t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
+            "SUM (t1.\"Quantity\") \"Ilość dostarczona\"\n" +
+            "FROM PDN1 T1\t\n" +
+            "INNER JOIN OPDN t2 ON t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "INNER JOIN OCRD t3 ON t2.\"CardCode\" = t3.\"CardCode\"\n" +
-            "INNER JOIN OITM t4 ON t1.\"ItemCode\" = t4.\"ItemCode\"\n" +
-            "WHERE t1.\"ItemCode\" NOT LIKE 'ZAM' AND t1.\"ItemCode\" NOT LIKE '#' AND t2.\"CardName\" LIKE '%" + CardCode + "%' AND RIGHT (t3.\"CardCode\", 5) LIKE '%" + Logo + "%' AND t1.\"Dscription\" LIKE '%" + Description + "%' AND t1.\"ItemCode\" LIKE '%" + ItemCode + "%' AND IFNULL (t4.\"U_DrawNoRaw\", '1') LIKE '%" + U_DrawNoRaw + "%' AND IFNULL (t4.\"U_DrawNoFinal\", '1') LIKE '%"+U_DrawNoFinal+"%' AND t2.\"DocDate\" BETWEEN '2017-01-01 00:00:00.0'  AND '2018-01-12 00:00:00.0'-- AND t1.\"Dscription\" LIKE 'FAPROXYD 620 CZARNA PŁM.RAL 9005'\n" +
-            "GROUP BY \"Dscription\", t1.\"ItemCode\", t4.\"U_DrawNoFinal\", t4.\"U_DrawNoRaw\",t2.\"CardName\", t3.\"CardCode\"");
+            "WHERE t2.\"CardName\" LIKE '%" + CardName + "%' AND t2.\"CardCode\" LIKE '%" + Logo + "%' AND CAST (LEFT(t2.\"DocDate\", 10) AS DATE)  BETWEEN '" + DateFrom + "' AND '"+DateTo+"' \n" +
+            "GROUP BY t3.\"CardCode\", t2.\"CardName\"");
+            gridPanel.DataTable = dataTable;
+        }
+
+
+        public void sqaSecondGrid(SAPbouiCOM.Grid gridPanel, String CardName, String DateFrom, String DateTo)
+        {
+            temporaryID = base.setRandom();
+            form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
+            dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
+            temporaryID++;
+            dataTable.ExecuteQuery("SELECT DISTINCT\n" +
+            "t0.\"DocNum\" \"Numer zamówienia\",\n" +
+            "CAST (LEFT(t0.\"DocDate\", 10) AS DATE) \"Data\"\n" +
+            "FROM OPDN t0\n" +
+            "WHERE t0.\"CardName\" LIKE '"+CardName+"' AND CAST (LEFT(t0.\"DocDate\", 10) AS DATE) BETWEEN '"+DateFrom+"' AND '"+DateTo+"'");
             gridPanel.DataTable = dataTable;
         }
 

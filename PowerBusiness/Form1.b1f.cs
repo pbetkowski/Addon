@@ -270,9 +270,9 @@ namespace PowerBusiness
                 else if (ComboBox0.Selected.Description == "9")
                 {
                     CM_Obj.changeMainLabel(StaticText8, "Sumaryczny raport dostarczonych wyrobów");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Dostawca", "Logo", "Opis", "Indeks", "Surowy", "Gotowy", "N/D", "N/D");
+                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Dostawca", "Logo", "Data od:", "Data do:", "N/D", "N/D", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.sqlaTotalReport(Grid0, par1, par2, par3, par4, par5, par6);
+                    SqlExecutor.sqaDeliveredTotal(Grid0, par1, par2, par3, par4);
                     this.GetItem("Item_31").Visible = false;        
                 }
             }
@@ -309,12 +309,15 @@ namespace PowerBusiness
                     SqlExecutor.fillSecondGridWitchChemicalStocks(Grid1, SecondPar);
                 }
 
+                else if (ComboBox0.Selected.Description == "9")
+                {
+                    SqlExecutor.sqaSecondGrid(Grid1, SecondPar, par3, par4);
+                }
+
                 else
                 {
                     SqlExecutor.fillSecondGridDefault(Grid1, SecondPar);
                 }
-
-
             }
 
             catch (Exception e)
@@ -416,9 +419,7 @@ namespace PowerBusiness
             {
                 if (ComboBox0.Selected.Description == "1")  //1 if "stany na lokalizacjach"
                 {
-
                     SqlExecutor.loadDataIntoTable(Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
-
                 }
 
                 else if (ComboBox0.Selected.Description == "2") //nieprzelokalizowane detale
@@ -440,7 +441,6 @@ namespace PowerBusiness
                 {
                     SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
-
                 }
 
                 else if (ComboBox0.Selected.Description == "6")  //lista zamówień magazynu chemicznego
@@ -454,11 +454,9 @@ namespace PowerBusiness
                     SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4, par5);
 
                 }
-
                 else if (ComboBox0.Selected.Description == "9")  //sqa1
                 {
-                    SqlExecutor.sqlaTotalReport(Grid0, par1, par2, par3, par4, par5, par6);
-
+                    SqlExecutor.sqaDeliveredTotal(Grid0, par1, par2, par3, par4);
                 }
             }
 
@@ -474,8 +472,8 @@ namespace PowerBusiness
             BubbleEvent = true;
             try
             {
-                //Grid0.Columns.Item("Indeks").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
-                Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
+                Grid0.Columns.Item("Indeks").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
+               // Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
             }
 
             catch (Exception e)
@@ -510,7 +508,6 @@ namespace PowerBusiness
         {
             BubbleEvent = true;
             Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
-
         }
     }
 }

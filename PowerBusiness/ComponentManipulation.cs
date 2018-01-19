@@ -131,7 +131,6 @@ namespace PowerBusiness
                 for (int i = 0; i < numberOfRows; i++)
                 {
                     //i= number of record, column is defined while executing method 
-                    //double columnValue = Double.Parse(gridPanel.DataTable.GetValue(columnIndex, i).ToString());
                     String columnvalue = gridPanel.DataTable.GetValue(columnIndex, i).ToString();
 
                     if (columnvalue.Equals("Niezrealizowane"))
@@ -169,7 +168,6 @@ namespace PowerBusiness
                 for (int i = 0; i < numberOfRows; i++)
                 {
                     //i= number of record, column is defined while executing method 
-                    //double columnValue = Double.Parse(gridPanel.DataTable.GetValue(columnIndex, i).ToString());
                     String columnvalue = gridPanel.DataTable.GetValue(columnIndex, i).ToString();
 
                     if (columnvalue.Equals("OK"))
