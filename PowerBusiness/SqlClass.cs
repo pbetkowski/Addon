@@ -470,31 +470,41 @@ namespace PowerBusiness
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
-            dataTable.ExecuteQuery("--zamówienia działu chemicznego\n" +
+            dataTable.ExecuteQuery("\n" +
             "\n" +
-            "WITH TEMP AS (\n" +
+            "WITH TEMP0 AS (\n" +
+            " \n" +
+            " SELECT DISTINCT \n" +
+            " t0.\"BaseDocNum\",\n" +
+            " SUM (t0.\"Quantity\") AS \"Ilość\"\n" +
+            " FROM PDN1 t0\n" +
+            " GROUP BY t0.\"BaseDocNum\"\n" +
+            " ),\n" +
+            "\n" +
+            "TEMP AS (\n" +
             "\n" +
             "SELECT DISTINCT \n" +
             "t0.\"DocNum\" \"Numer zamówienia\",\n" +
             "t0.\"DocDate\"  \"Data zamówienia\",\n" +
             "t0.\"CardName\" \"Dostawca\",\n" +
-            "t0.\"DocTotal\" \"Wartość zamówienia\",\n" +
+            "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
             "t0.\"DocCur\" \"Waluta\",\n" +
             "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
             "t0.\"BPLName\" \"Oddział\",\n" +
             "t2.\"SeriesName\" \"Typ zamówienia\",\n" +
             "t0.\"DocEntry\",\n" +
-            "(CASE WHEN (SUM (t1.\"OpenQty\") = SUM (t1.\"Quantity\")) THEN 'Niezrealizowane'\n" +
-            "\t  WHEN (SUM (t1.\"OpenQty\") = 0) THEN 'Zrealizowane'\n" +
-            "\t  WHEN (SUM (t1.\"OpenQty\") > 0 AND SUM(t1.\"OpenQty\") <> SUM (t1.\"Quantity\")) THEN 'Częściowo'\n" +
+            "(CASE WHEN (SUM (t1.\"Quantity\") = SUM (t4.\"Ilość\")) THEN 'Zrealizowane'\n" +
+            "\t  WHEN (SUM (t1.\"Quantity\") > SUM (t4.\"Ilość\") AND SUM (t4.\"Ilość\") <> 0) THEN 'Częściowo'\n" +
+            "\t  WHEN (SUM (t4.\"Ilość\") IS NULL) THEN 'Niezrealizowane'\n" +
+            "\t  WHEN (SUM (t1.\"Quantity\") < SUM (t4.\"Ilość\")) THEN 'Przekroczone'\n" +
             "END) AS \"Status\"\n" +
             "FROM OPOR t0\n" +
             "INNER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
             "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
-            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"DocTotal\", t0.\"DocEntry\"\n" +
+            "LEFT OUTER JOIN TEMP0 t4 ON t0.\"DocNum\" = t4.\"BaseDocNum\"\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"DocEntry\"\n" +
             "\n" +
             "),\n" +
-            "\n" +
             "\n" +
             "\n" +
             "TEMP2 AS (\n" +
@@ -517,17 +527,17 @@ namespace PowerBusiness
             "t1.\"Numer zamówienia\",\n" +
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
-            "t1.\"Status\",\n" +
             "t1.\"Wartość zamówienia\",\n" +
             "t1.\"Waluta\",\n" +
             "t1.\"Uwagi\",\n" +
             "t1.\"Oddział\",\n" +
-            "t1.\"Typ zamówienia\"\n" +
+            "t1.\"Typ zamówienia\",\n" +
+            "t1.\"Status\"\n" +
             "FROM TEMP t1 \n" +
-            "INNER JOIN TEMP2 t2 on t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
+            "--INNER JOIN TEMP2 t2 on t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
             "\n" +
-            "WHERE (table.\"Typ zamówienia\" LIKE 'MAG-BB' OR table.\"Typ zamówienia\" LIKE 'MAG-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Status\" LIKE '%" + Status + "%' AND table.\"Waluta\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND table.\"Oddział\" LIKE '%"+Branch+"%'  \n" +
+             "WHERE (table.\"Typ zamówienia\" LIKE 'MAG-BB' OR table.\"Typ zamówienia\" LIKE 'MAG-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Status\" LIKE '%" + Status + "%' AND table.\"Waluta\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND table.\"Oddział\" LIKE '%" + Branch + "%'  \n" +
             "\n");
             gridPanel.DataTable = dataTable;
         }
