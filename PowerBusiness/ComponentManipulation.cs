@@ -139,13 +139,18 @@ namespace PowerBusiness
 
                     }
 
-                    if (columnvalue.Equals("Zrealizowane"))
+                    else if (columnvalue.Equals("Zrealizowane"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, green);
 
                     }
 
-                    if (columnvalue.Equals("Częściowo"))
+                    else if (columnvalue.Equals("Częściowo"))
+                    {
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, orange);
+                    }
+
+                    else if (columnvalue.Equals("Częściowo"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, orange);
                     }

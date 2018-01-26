@@ -5,21 +5,21 @@ using System.Text;
 
 namespace PowerBusiness
 {
-     public class SqlClass : Counter
+    public class SqlClass : Counter
     {
 
         long temporaryID;
         private SAPbouiCOM.DataTable dataTable;
         SAPbouiCOM.Form form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
 
-         //stare stany na lokalizacjach
+        //stare stany na lokalizacjach
         public void loadDataIntoTable(SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal, String ItemName, String WhsCode, String Localization, String DistNumber, String SuppNumber)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
-            
+
             dataTable.ExecuteQuery("--set schema \"SBOELECTROPOLI\"\n" +
          "WITH CTE1 AS\n" +
          "(--stan magazynu wraz z ostatnim dokumentem na indeksie\n" +
@@ -271,16 +271,16 @@ namespace PowerBusiness
          " LEFT OUTER JOIN CTE9 T5 ON IFNULL(T2.\"U_RscCode\",T0.\"BinCode\") = T5.\"U_RscCode\" AND T4.\"U_DocEntry\" = T5.\"DocEntry\"\n" +
          " LEFT OUTER JOIN CTE6 T6 ON T0.\"ItemCode\" = T6.\"U_ItemCode\"\n" +
          " LEFT OUTER JOIN CTE7 T7 ON T1.\"TransType\" = T7.\"ObjType\"\n" +
-         " WHERE T0.\"ItemCode\" LIKE '%"+ItemCode+"%' AND T0.\"U_DrawNoRaw\" LIKE '%"+U_DrawNoRaw+"%' AND T0.\"U_DrawNoFinal\" LIKE '%"+U_DrawNoFinal+"%' AND T0.\"ItemName\" LIKE '%"+ItemName+"%' AND T0.\"WhsCode\" LIKE '%"+WhsCode+"%'\n" +
-         " AND T0.\"DistNumber\" LIKE '%"+DistNumber+"%' AND T0.\"U_SupNumber\" LIKE '%"+SuppNumber+"%' AND T0.\"BinCode\" LIKE '%"+Localization+"%' \n");
+         " WHERE T0.\"ItemCode\" LIKE '%" + ItemCode + "%' AND T0.\"U_DrawNoRaw\" LIKE '%" + U_DrawNoRaw + "%' AND T0.\"U_DrawNoFinal\" LIKE '%" + U_DrawNoFinal + "%' AND T0.\"ItemName\" LIKE '%" + ItemName + "%' AND T0.\"WhsCode\" LIKE '%" + WhsCode + "%'\n" +
+         " AND T0.\"DistNumber\" LIKE '%" + DistNumber + "%' AND T0.\"U_SupNumber\" LIKE '%" + SuppNumber + "%' AND T0.\"BinCode\" LIKE '%" + Localization + "%' \n");
             gridPanel.DataTable = dataTable;
-        
-        
+
+
         }
 
-     
-         //nieprzelokalizowane detale
-        public void detailsOnSP(SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String Client , String WhsCode, String Localization, String DistNumber)
+
+        //nieprzelokalizowane detale
+        public void detailsOnSP(SAPbouiCOM.Grid gridPanel, String ItemCode, String U_DrawNoRaw, String Client, String WhsCode, String Localization, String DistNumber)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -304,7 +304,7 @@ namespace PowerBusiness
             "LEFT OUTER JOIN OITM T4 ON T0.\"ItemCode\" = T4.\"ItemCode\" \n" +
             "INNER JOIN OCRD t5 ON SUBSTR (t0.\"ItemCode\", 4, 5) = RIGHT (t5.\"CardCode\",5)\n" +
             "WHERE T3.\"BinCode\" LIKE 'MSU%SP%' AND T0.\"OnHandQty\" <> 0 AND T0.\"ItemCode\" LIKE '%" +
-            ItemCode + "%' AND T4.\"U_DrawNoRaw\" LIKE '%" + U_DrawNoRaw + "%' AND T0.\"WhsCode\" LIKE '%" + WhsCode + "%' AND T3.\"BinCode\" LIKE '%" + Localization + "%' AND t5.\"CardName\" LIKE '%" + Client + "%' AND T2.\"DistNumber\" LIKE '%"+DistNumber+"%'");
+            ItemCode + "%' AND T4.\"U_DrawNoRaw\" LIKE '%" + U_DrawNoRaw + "%' AND T0.\"WhsCode\" LIKE '%" + WhsCode + "%' AND T3.\"BinCode\" LIKE '%" + Localization + "%' AND t5.\"CardName\" LIKE '%" + Client + "%' AND T2.\"DistNumber\" LIKE '%" + DistNumber + "%'");
             gridPanel.DataTable = dataTable;
         }
 
@@ -322,12 +322,12 @@ namespace PowerBusiness
             "t1.\"CardName\" \"Klient\"\n" +
             "FROM OITM t0\n" +
             "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\", 4, 5) = RIGHT (t1.\"CardCode\", 5)\n" +
-            "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoRaw\" LIKE '%" + U_DrawNoRaw + "%'AND t0.\"ItemName\" LIKE '%"+ItemName+"%' AND t1.\"CardName\" LIKE '%"+Client+"%' \n" +
+            "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoRaw\" LIKE '%" + U_DrawNoRaw + "%'AND t0.\"ItemName\" LIKE '%" + ItemName + "%' AND t1.\"CardName\" LIKE '%" + Client + "%' \n" +
             "GROUP BY t0.\"U_DrawNoRaw\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
             gridPanel.DataTable = dataTable;
         }
 
-         //stany dla numeru gotowego
+        //stany dla numeru gotowego
         public void u_DrawNoFinalSumRaport(SAPbouiCOM.Grid gridPanel, String U_DrawNoFinal, String ItemName, String Client)
         {
             temporaryID = base.setRandom();
@@ -345,10 +345,10 @@ namespace PowerBusiness
              "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '%" + U_DrawNoFinal + "%' AND t0.\"ItemName\" LIKE '%" + ItemName + "%' AND t1.\"CardName\" LIKE '%" + Client + "%' \n" +
             "GROUP BY t0.\"U_DrawNoFinal\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
             gridPanel.DataTable = dataTable;
-        
+
         }
 
-         //stany dla danego numeru surowego
+        //stany dla danego numeru surowego
         public void fillSecondGridDefault(SAPbouiCOM.Grid gridPanel, String U_DrawNoRaw)
         {
             temporaryID = base.setRandom();
@@ -366,9 +366,9 @@ namespace PowerBusiness
            "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '" + U_DrawNoRaw + "' \n" +
            "GROUP BY t0.\"U_DrawNoFinal\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
             gridPanel.DataTable = dataTable;
-          
+
         }
-         //szczegóły zamówień
+        //szczegóły zamówień
         public void fillSecondGridPurchase(SAPbouiCOM.Grid gridPanel, String OrderNumber)
         {
             temporaryID = base.setRandom();
@@ -385,10 +385,10 @@ namespace PowerBusiness
                   "\n" +
                 "FROM POR1 t0\n" +
              "INNER JOIN OPOR t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
-              "WHERE t1.\"DocNum\" = "+OrderNumber+"");
+              "WHERE t1.\"DocNum\" = " + OrderNumber + "");
             gridPanel.DataTable = dataTable;
         }
-         //zamówienia działu zakupów
+        //zamówienia działu zakupów
         public void purchaseOrdersRapport(SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Currency, String Comments, String Status, String Branch)
         {
             temporaryID = base.setRandom();
@@ -458,12 +458,12 @@ namespace PowerBusiness
             "FROM TEMP t1 \n" +
             "INNER JOIN TEMP2 t2 on t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
-            "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '"+OrderNumber+"%' AND table.\"Dostawca\" LIKE '%"+Supplier+"%' AND table.\"Waluta\" LIKE '%"+Currency+"%' AND IFNULL (\"Uwagi\", '1') LIKE '%"+Comments+"%' AND IFNULL (\"Status\", '1') LIKE '%"+Status+"%' AND table.\"Oddział\" LIKE '%"+Branch+"%'");
+            "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Waluta\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND IFNULL (\"Status\", '1') LIKE '%" + Status + "%' AND table.\"Oddział\" LIKE '%" + Branch + "%'");
             gridPanel.DataTable = dataTable;
-                      
+
         }
 
-         //zamówienia magazynu chemicznego
+        //zamówienia magazynu chemicznego
         public void chemicalOrdersReport(SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Status, String Currency, String Comments, String Branch)
         {
             temporaryID = base.setRandom();
@@ -563,49 +563,49 @@ namespace PowerBusiness
         }
 
 
-        public void chemicalStocks (SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description, String State)
+        public void chemicalStocks(SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description, String State)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
-            dataTable.ExecuteQuery("WITH TEMP2 AS (\n"+
-            "\t\t\t \t\t   \t\t\t\t\n"+
-            "SELECT  \n"+
-            " T6.\"ItemCode\", \n"+
-            " SUM (T2.\"OnHandQty\") AS \"Linia\"\n"+
-            "-- T3.\"WhsCode\"\n"+
-            "FROM OITL T0\n"+
-            " INNER JOIN ITL1 T1 ON T1.\"LogEntry\"=T0.\"LogEntry\"\n"+
-            " INNER JOIN OBBQ T2 ON T1.\"MdAbsEntry\" = T2.\"SnBMDAbs\"\n"+
-            " INNER JOIN OBIN T3 ON T2.\"BinAbs\" = T3.\"AbsEntry\"\n"+
-            " INNER JOIN OBTN T4 ON T2.\"SnBMDAbs\"=t4.\"AbsEntry\"\n"+
-            " INNER JOIN OINM T5 ON T0.\"DocEntry\" = T5.\"CreatedBy\" AND T0.\"DocLine\" = T5.\"DocLineNum\" AND T0.\"DocType\" = T5.\"TransType\"\n"+
-            " INNER JOIN OITM T6 ON T0.\"ItemCode\" = T6.\"ItemCode\"\n"+
-            "WHERE\n"+
-            " T3.\"AltSortCod\" LIKE 'MAT_POM_LINIA'\n"+
-            "GROUP BY\n"+
-            " T6.\"ItemCode\"--, t3.\"WhsCode\"\n"+
-            " \n"+
-            "\t\t\t\t)\n"+
-            "\t\t\t\t\t\t\t\t\t\n"+
-            "SELECT * FROM \n"+
-            "(SELECT DISTINCT\n"+
-            "t1.\"CardName\" \"Klient\",\n"+
-            "t0.\"ItemCode\" \"Indeks\",\n"+
-            "t0.\"U_DrawNoFinal\" \"NrRysGot\",\n"+
-            "t0.\"ItemName\" \"Opis\",\n"+
-            "t0.\"InvntryUom\" \"jm\",\n"+
-            "t0.\"U_MinQty\" \"Ilość min\",\n"+
-            "t0.\"OnHand\" \"Stan sur\",\n"+
-            "IFNULL (t5.\"Linia\",0) \"Stan lin\",\n"+
-            "(CASE WHEN (t0.\"OnHand\" > t0.\"U_MinQty\" ) THEN 'OK'\n"+
-            "      ELSE  'NOK' END ) AS \"Stan\"\n"+
-            "FROM OITM t0\n"+
-            "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\",4,5) = RIGHT(t1.\"CardCode\",5)\n"+
-            "INNER JOIN OITW t4 ON t0.\"ItemCode\" = t4.\"ItemCode\"\n"+
+            dataTable.ExecuteQuery("WITH TEMP2 AS (\n" +
+            "\t\t\t \t\t   \t\t\t\t\n" +
+            "SELECT  \n" +
+            " T6.\"ItemCode\", \n" +
+            " SUM (T2.\"OnHandQty\") AS \"Linia\"\n" +
+            "-- T3.\"WhsCode\"\n" +
+            "FROM OITL T0\n" +
+            " INNER JOIN ITL1 T1 ON T1.\"LogEntry\"=T0.\"LogEntry\"\n" +
+            " INNER JOIN OBBQ T2 ON T1.\"MdAbsEntry\" = T2.\"SnBMDAbs\"\n" +
+            " INNER JOIN OBIN T3 ON T2.\"BinAbs\" = T3.\"AbsEntry\"\n" +
+            " INNER JOIN OBTN T4 ON T2.\"SnBMDAbs\"=t4.\"AbsEntry\"\n" +
+            " INNER JOIN OINM T5 ON T0.\"DocEntry\" = T5.\"CreatedBy\" AND T0.\"DocLine\" = T5.\"DocLineNum\" AND T0.\"DocType\" = T5.\"TransType\"\n" +
+            " INNER JOIN OITM T6 ON T0.\"ItemCode\" = T6.\"ItemCode\"\n" +
+            "WHERE\n" +
+            " T3.\"AltSortCod\" LIKE 'MAT_POM_LINIA'\n" +
+            "GROUP BY\n" +
+            " T6.\"ItemCode\"--, t3.\"WhsCode\"\n" +
+            " \n" +
+            "\t\t\t\t)\n" +
+            "\t\t\t\t\t\t\t\t\t\n" +
+            "SELECT * FROM \n" +
+            "(SELECT DISTINCT\n" +
+            "t1.\"CardName\" \"Klient\",\n" +
+            "t0.\"ItemCode\" \"Indeks\",\n" +
+            "t0.\"U_DrawNoFinal\" \"NrRysGot\",\n" +
+            "t0.\"ItemName\" \"Opis\",\n" +
+            "t0.\"InvntryUom\" \"jm\",\n" +
+            "t0.\"U_MinQty\" \"Ilość min\",\n" +
+            "t0.\"OnHand\" \"Stan sur\",\n" +
+            "IFNULL (t5.\"Linia\",0) \"Stan lin\",\n" +
+            "(CASE WHEN (t0.\"OnHand\" > t0.\"U_MinQty\" ) THEN 'OK'\n" +
+            "      ELSE  'NOK' END ) AS \"Stan\"\n" +
+            "FROM OITM t0\n" +
+            "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\",4,5) = RIGHT(t1.\"CardCode\",5)\n" +
+            "INNER JOIN OITW t4 ON t0.\"ItemCode\" = t4.\"ItemCode\"\n" +
             "INNER JOIN  TEMP2 t5 ON t0.\"ItemCode\" = t5.\"ItemCode\") as table \n" +
-            "WHERE table.\"Klient\" LIKE '%"+Client+"%' AND table.\"Indeks\" LIKE '%"+ItemCode+"%' AND table.\"NrRysGot\" LIKE '%"+U_DrawNoFinal+"%' AND table.\"Opis\" LIKE '%"+Description+"%' AND table.\"Stan\" LIKE '"+State+"%'");
+            "WHERE table.\"Klient\" LIKE '%" + Client + "%' AND table.\"Indeks\" LIKE '%" + ItemCode + "%' AND table.\"NrRysGot\" LIKE '%" + U_DrawNoFinal + "%' AND table.\"Opis\" LIKE '%" + Description + "%' AND table.\"Stan\" LIKE '" + State + "%'");
             gridPanel.DataTable = dataTable;
         }
 
@@ -624,13 +624,13 @@ namespace PowerBusiness
             "t1.\"CardName\" \"Klient\"\n" +
             "FROM OITM t0\n" +
             "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\", 4, 5) = RIGHT (t1.\"CardCode\", 5)\n" +
-            "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '"+U_DrawNoFinal+"'\n" +
+            "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '" + U_DrawNoFinal + "'\n" +
             "GROUP BY t0.\"U_DrawNoFinal\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
             gridPanel.DataTable = dataTable;
         }
 
 
-         //do skasowania później
+        //do skasowania później
         //public void sqlaTotalReport(SAPbouiCOM.Grid gridPanel, String CardCode, String Logo, String Description, String ItemCode, String U_DrawNoRaw, String U_DrawNoFinal)
         //{
         //    temporaryID = base.setRandom();
@@ -657,7 +657,6 @@ namespace PowerBusiness
 
 
         public void sqaDeliveredTotal(SAPbouiCOM.Grid gridPanel, String CardName, String Logo, String DateFrom, String DateTo)
-
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -670,7 +669,7 @@ namespace PowerBusiness
             "FROM PDN1 T1\t\n" +
             "INNER JOIN OPDN t2 ON t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "INNER JOIN OCRD t3 ON t2.\"CardCode\" = t3.\"CardCode\"\n" +
-            "WHERE t2.\"CardName\" LIKE '%" + CardName + "%' AND t2.\"CardCode\" LIKE '%" + Logo + "%' AND CAST (LEFT(t2.\"DocDate\", 10) AS DATE)  BETWEEN '" + DateFrom + "' AND '"+DateTo+"' \n" +
+            "WHERE t2.\"CardName\" LIKE '%" + CardName + "%' AND t2.\"CardCode\" LIKE '%" + Logo + "%' AND CAST (LEFT(t2.\"DocDate\", 10) AS DATE)  BETWEEN '" + DateFrom + "' AND '" + DateTo + "' \n" +
             "GROUP BY t3.\"CardCode\", t2.\"CardName\"");
             gridPanel.DataTable = dataTable;
         }
@@ -686,19 +685,110 @@ namespace PowerBusiness
             "t0.\"DocNum\" \"Numer zamówienia\",\n" +
             "CAST (LEFT(t0.\"DocDate\", 10) AS DATE) \"Data\"\n" +
             "FROM OPDN t0\n" +
-            "WHERE t0.\"CardName\" LIKE '"+CardName+"' AND CAST (LEFT(t0.\"DocDate\", 10) AS DATE) BETWEEN '"+DateFrom+"' AND '"+DateTo+"'");
+            "WHERE t0.\"CardName\" LIKE '" + CardName + "' AND CAST (LEFT(t0.\"DocDate\", 10) AS DATE) BETWEEN '" + DateFrom + "' AND '" + DateTo + "'");
             gridPanel.DataTable = dataTable;
         }
 
 
+        public void orderStatusForCommoners(SAPbouiCOM.Grid gridPanel, String OrderNumber)
+        {
+            temporaryID = base.setRandom();
+            form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
+            dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
+            temporaryID++;
+            dataTable.ExecuteQuery("WITH \n" +
+            "\n" +
+            "TEMP4 AS (\n" +
+            "\n" +
+            "SELECT\n" +
+            " t0.\"WinUsrName\",\n" +
+            " t1.\"U_NAME\",\n" +
+            " t2.\"Name\",\n" +
+            " t2.\"Code\"\n" +
+            "FROM\n" +
+            "USR5 T0 \n" +
+            "INNER JOIN OUSR T1 ON T0.\"UserCode\" = t1.USER_CODE\n" +
+            "INNER JOIN OUDP t2 ON t1.\"Department\" = t2.\"Code\"\n" +
+            "INNER JOIN M_CONNECTIONS MC ON MC.logical_connection_id = CURRENT_CONNECTION AND T0.\"ProcessID\" = MC.CLIENT_PID \n" +
+            "AND T0.\"SessionID\" = CURRENT_CONNECTION\n" +
+            "\n" +
+            "),\n" +
+            "\n" +
+            "TEMP AS (\n" +
+            "\n" +
+            "SELECT DISTINCT \n" +
+            "t10.\"Name\",\n" +
+            "t4.\"DocNum\" \"Numer zlecenia\",\n" +
+            "t0.\"DocNum\" \"Numer zamówienia\",\n" +
+            "t0.\"DocDate\"  \"Data zamówienia\",\n" +
+            "t0.\"CardName\" \"Dostawca\",\n" +
+            "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
+            "t0.\"DocCur\" \"Waluta\",\n" +
+            "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
+            "(CASE WHEN (t0.\"U_Status_Zam\" = '1') THEN 'Nowe zamówienie'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '2') THEN 'Dyr_Zakładu'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '3') THEN 'Dyr_Zak/Log'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '4') THEN 'Dyr_Finansowy'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '5') THEN 'Zarząd'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'OK'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zablokowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'W toku'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Realizacja częściowa'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zrealizowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'Faktura' \n" +
+            "      WHEN (t0.\"U_Status_Zam\" = '12') THEN 'Archiwum' \n" +
+            "END) AS \"Status\",\n" +
+            "\n" +
+            "t0.\"BPLName\" \"Oddział\",\n" +
+            "t2.\"SeriesName\" \"Typ zamówienia\",\n" +
+            "t0.\"DocEntry\"\n" +
+            "FROM OPOR t0\n" +
+            "RIGHT OUTER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
+            "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
+            "RIGHT OUTER JOIN OPRQ t4 ON t1.\"BaseDocNum\" = t4.\"DocNum\"\n" +
+            "INNER JOIN TEMP4 t10 ON t4.\"Department\" = t10.\"Code\"\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"DocEntry\", t4.\"DocNum\", t10.\"Name\"\n" +
+            "\n" +
+            "\n" +
+            ")\n" +
+            "\n" +
+            "\n" +
+            "SELECT * FROM\n" +
+            " (SELECT DISTINCT \n" +
+            "t1.\"Name\" \"Dział wystawiający\",\n" +
+            "t1.\"Numer zlecenia\",\n" +
+            "t1.\"Numer zamówienia\",\n" +
+            "t1.\"Data zamówienia\",\n" +
+            "t1.\"Dostawca\",\n" +
+            "t1.\"Uwagi\",\n" +
+            "IFNULL (CAST (t1.\"Status\" AS nvarchar(40)), 'Przekazano do działu zakupów') AS \"Status\" ,\n" +
+            "t1.\"Typ zamówienia\"\n" +
+            "FROM TEMP t1 \n" +
+            ") AS table\n" +
+            "\n" +
+            "WHERE (IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%' OR IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%')\n" +
+            "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (table.\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%"+OrderNumber+"%'");
+            gridPanel.DataTable = dataTable;
+        }
 
 
-
-       
-
-
+        public void fillSecondGridWithOrderDetailsForCommoners(SAPbouiCOM.Grid gridPanel, String OrderNumber)
+        {
+            temporaryID = base.setRandom();
+            form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
+            dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
+            temporaryID++;
+            dataTable.ExecuteQuery("SELECT \n" +
+            "t1.\"DocNum\" \"Numer zamówienia\",\n" +
+            "t0.\"FreeTxt\" \"Opis\",\n" +
+            "t0.\"Quantity\" \"Ilość\",\n" +
+            "t0.\"Price\" \"Cena jedn\",\n" +
+            "(t0.\"Quantity\" * t0.\"Price\") AS \"Łącznie\"\n" +
+            "FROM\n" +
+            "PRQ1 t0\n" +
+            "INNER JOIN OPRQ t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
+            "WHERE t1.\"DocNum\" LIKE '"+OrderNumber+"'");
+            gridPanel.DataTable = dataTable;
+        }
     }
-
-    
-
 }
