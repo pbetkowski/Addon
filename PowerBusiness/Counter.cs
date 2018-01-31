@@ -11,10 +11,6 @@ namespace PowerBusiness
 
         protected long setRandom()
         {   
-           //long rand;
-           //rand = random.Next(1, 999999910);
-           //return rand;
-
             return random.Next(1, 999999910);
         }
 

@@ -59,6 +59,7 @@ namespace PowerBusiness
         Boolean isSorted;
         List<SAPbouiCOM.EditText> listOfEditText;
 
+
         public Form1()
         {
         }
@@ -113,7 +114,9 @@ namespace PowerBusiness
             this.Button2.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button2_ClickBefore);
             this.HelpButton = ((SAPbouiCOM.Button)(this.GetItem("Item_28").Specific));
             this.HelpButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.HelpButton_ClickBefore);
-            this.listOfEditText = this.CM_Obj.addItemsToList(this.Edit0, this.Edit1, this.Edit3, this.Edit4, this.Edit5, this.Edit6, this.Edit7, this.Edit8);
+            // 
+            this.listOfEditText = this.CM_Obj.addItemsToList(this.Edit0, this.Edit1, this.Edit2, this.Edit3, this.Edit4, this.Edit5, this.Edit6, this.Edit7, this.Edit8);
+            // 
             this.CloseButton = ((SAPbouiCOM.Button)(this.GetItem("Item_29").Specific));
             this.CloseButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.CloseApplication);
             this.CountButton = ((SAPbouiCOM.Button)(this.GetItem("Item_31").Specific));
@@ -232,7 +235,7 @@ namespace PowerBusiness
                     CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Waluta", "Uwagi", "Status", "Odział", "N/D", "N/D");
                     CM_Obj.checkIfItemValueIsNull(listOfEditText);
                     SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
+                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 7);
                     this.GetItem("Item_31").Visible = false;
                     isColored = true;
                 }
@@ -331,9 +334,9 @@ namespace PowerBusiness
                 }
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
-                Application.SBO_Application.MessageBox(e.Message);
+               // Application.SBO_Application.MessageBox(e.Message);
             }
 
         }
@@ -451,7 +454,7 @@ namespace PowerBusiness
                 else if (ComboBox0.Selected.Description == "5")  //lista zamówień
                 {
                     SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
+                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 7);
                 }
 
                 else if (ComboBox0.Selected.Description == "6")  //lista zamówień magazynu chemicznego
@@ -473,8 +476,6 @@ namespace PowerBusiness
 
                 }
 
-
-
                 else if (ComboBox0.Selected.Description == "9")  //sqa1
                 {
                     SqlExecutor.sqaDeliveredTotal(Grid0, par1, par2, par3, par4);
@@ -495,6 +496,17 @@ namespace PowerBusiness
             {
                // Grid0.Columns.Item("Indeks").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
                // Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
+
+               // this.Grid0.Item.Width = 1200;
+                //Grid0.Columns.Item("Numer zamówienia").Type = SAPbouiCOM.BoGridColumnType.gct_EditText;
+               // SAPbouiCOM.GridColumn column;
+               //
+                SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn) Grid0.Columns.Item("ItemCode");
+                column.LinkedObjectType = "4";
+
+               // Grid0.Columns.Item("ItemCode").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
+                
+
             }
 
             catch (Exception e)
@@ -530,5 +542,6 @@ namespace PowerBusiness
             BubbleEvent = true;
             Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
         }
+
     }
 }

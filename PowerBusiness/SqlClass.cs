@@ -244,7 +244,7 @@ namespace PowerBusiness
          "\n" +
          "\n" +
          "SELECT DISTINCT\n" +
-         "  T0.\"ItemCode\" AS \"Symbol\",\n" +
+         "  T0.\"ItemCode\",\n" +
          "  T0.\"U_DrawNoRaw\" AS \"Surowy\", \n" +
          "  T0.\"U_DrawNoFinal\" AS \"Gotowy\",\n" +
          "  T0.\"ItemName\" AS \"Opis\",\n" +
@@ -274,6 +274,9 @@ namespace PowerBusiness
          " WHERE T0.\"ItemCode\" LIKE '%" + ItemCode + "%' AND T0.\"U_DrawNoRaw\" LIKE '%" + U_DrawNoRaw + "%' AND T0.\"U_DrawNoFinal\" LIKE '%" + U_DrawNoFinal + "%' AND T0.\"ItemName\" LIKE '%" + ItemName + "%' AND T0.\"WhsCode\" LIKE '%" + WhsCode + "%'\n" +
          " AND T0.\"DistNumber\" LIKE '%" + DistNumber + "%' AND T0.\"U_SupNumber\" LIKE '%" + SuppNumber + "%' AND T0.\"BinCode\" LIKE '%" + Localization + "%' \n");
             gridPanel.DataTable = dataTable;
+            SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("ItemCode");
+            column.LinkedObjectType = "4";
+
 
 
         }
@@ -398,6 +401,7 @@ namespace PowerBusiness
             dataTable.ExecuteQuery("WITH TEMP AS (\n" +
             "\n" +
             "SELECT DISTINCT \n" +
+            "t0.\"DocEntry\" \"Link\",\n" +
             "t0.\"DocNum\" \"Numer zamówienia\",\n" +
             "t0.\"DocDate\"  \"Data zamówienia\",\n" +
             "t0.\"CardName\" \"Dostawca\",\n" +
@@ -446,6 +450,7 @@ namespace PowerBusiness
             "\n" +
             "SELECT * FROM (SELECT DISTINCT \n" +
             "\n" +
+            "t1.\"Link\",\n" +
             "t1.\"Numer zamówienia\",\n" +
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
@@ -460,7 +465,8 @@ namespace PowerBusiness
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
             "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Waluta\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND IFNULL (\"Status\", '1') LIKE '%" + Status + "%' AND table.\"Oddział\" LIKE '%" + Branch + "%'");
             gridPanel.DataTable = dataTable;
-
+            SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("Link");
+            column.LinkedObjectType = "22";
         }
 
         //zamówienia magazynu chemicznego
@@ -768,6 +774,7 @@ namespace PowerBusiness
             "\n" +
             "WHERE (IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%' OR IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%')\n" +
             "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (table.\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%"+OrderNumber+"%'");
+            
             gridPanel.DataTable = dataTable;
         }
 

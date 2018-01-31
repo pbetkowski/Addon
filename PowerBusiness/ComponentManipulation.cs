@@ -12,10 +12,12 @@ namespace PowerBusiness
         int white = 16777215;
         int red = 255;
         int green = 6026752;
-        int orange = 16490752;
-        int yellow = 16766852;
-        int sea = 16766852;
         int blue = 16766852;
+        int darkblue = 16753920;
+        int navyblue = 16754075;
+        int vomit = 8168859;
+        int bordo = 5512112;
+        
         
         public void changeLabel(SAPbouiCOM.StaticText StaticText0, SAPbouiCOM.StaticText StaticText1, SAPbouiCOM.StaticText StaticText2, SAPbouiCOM.StaticText StaticText3, SAPbouiCOM.StaticText StaticText4, SAPbouiCOM.StaticText StaticText5, SAPbouiCOM.StaticText StaticText6, SAPbouiCOM.StaticText StaticText7, String par1, String par2, String par3, String par4, String par5, String par6, String par7, String par8)
         {
@@ -56,43 +58,43 @@ namespace PowerBusiness
 
                     else if (columnvalue.Equals("Dyr_Zakładu"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, orange);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
 
                     }
 
                     else if (columnvalue.Equals("Dyr_Zak/Log"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, navyblue);
                     }
 
                     else if (columnvalue.Equals("Dyr_Finansowy"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, sea);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, darkblue);
                     }
 
                     else if (columnvalue.Equals("Zarząd"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, yellow);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
                     }
 
                     else if (columnvalue.Equals("OK"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i+1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, green);
                     }
 
                     else if (columnvalue.Equals("Zablokowane"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, bordo);
                     }
 
                     else if (columnvalue.Equals("W toku"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, vomit);
                     }
 
                     else if (columnvalue.Equals("Realizacja częściowa"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, darkblue);
                     }
 
                     else if (columnvalue.Equals("Zrealizowane"))
@@ -107,10 +109,8 @@ namespace PowerBusiness
 
                     else if (columnvalue.Equals("Zablokowane"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);              
                     }
-               
-
                 }
             }
 
@@ -147,12 +147,12 @@ namespace PowerBusiness
 
                     else if (columnvalue.Equals("Częściowo"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, orange);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
                     }
 
-                    else if (columnvalue.Equals("Częściowo"))
+                    else if (columnvalue.Equals("Przekroczone"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, orange);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
                     }
 
                 }
@@ -178,13 +178,11 @@ namespace PowerBusiness
                     if (columnvalue.Equals("OK"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, green);
-
                     }
 
-                    if (columnvalue.Equals("NOK"))
+                    else if (columnvalue.Equals("NOK"))
                     {
                         gridPanel.CommonSetting.SetRowBackColor(i + 1, red);
-
                     }
 
                 }
@@ -210,7 +208,7 @@ namespace PowerBusiness
          //inicjalizacja listy
 
 
-        public List<SAPbouiCOM.EditText> addItemsToList(SAPbouiCOM.EditText e1, SAPbouiCOM.EditText e2, SAPbouiCOM.EditText e3, SAPbouiCOM.EditText e4, SAPbouiCOM.EditText e5, SAPbouiCOM.EditText e6, SAPbouiCOM.EditText e7, SAPbouiCOM.EditText e8)
+        public List<SAPbouiCOM.EditText> addItemsToList(SAPbouiCOM.EditText e1, SAPbouiCOM.EditText e2, SAPbouiCOM.EditText e3, SAPbouiCOM.EditText e4, SAPbouiCOM.EditText e5, SAPbouiCOM.EditText e6, SAPbouiCOM.EditText e7, SAPbouiCOM.EditText e8, SAPbouiCOM.EditText e9)
         {
             List<SAPbouiCOM.EditText> list = new List<SAPbouiCOM.EditText>();
             list.Add(e1);
