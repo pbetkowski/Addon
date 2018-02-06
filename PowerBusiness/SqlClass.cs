@@ -569,7 +569,7 @@ namespace PowerBusiness
         }
 
 
-        public void chemicalStocks(SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description, String State)
+        public void chemicalStocks(SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -595,8 +595,7 @@ namespace PowerBusiness
             " \n" +
             "\t\t\t\t)\n" +
             "\t\t\t\t\t\t\t\t\t\n" +
-            "SELECT * FROM \n" +
-            "(SELECT DISTINCT\n" +
+            "SELECT DISTINCT\n" +
             "t1.\"CardName\" \"Klient\",\n" +
             "t0.\"ItemCode\" \"Indeks\",\n" +
             "t0.\"U_DrawNoFinal\" \"NrRysGot\",\n" +
@@ -607,32 +606,97 @@ namespace PowerBusiness
             "IFNULL (t5.\"Linia\",0) \"Stan lin\",\n" +
             "(CASE WHEN (t0.\"OnHand\" > t0.\"U_MinQty\" ) THEN 'OK'\n" +
             "      ELSE  'NOK' END ) AS \"Stan\"\n" +
+            " --t0.\"U_GospodarkaMaterialowa\"\n" +
             "FROM OITM t0\n" +
             "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\",4,5) = RIGHT(t1.\"CardCode\",5)\n" +
-            "INNER JOIN OITW t4 ON t0.\"ItemCode\" = t4.\"ItemCode\"\n" +
-            "INNER JOIN  TEMP2 t5 ON t0.\"ItemCode\" = t5.\"ItemCode\") as table \n" +
-            "WHERE table.\"Klient\" LIKE '%" + Client + "%' AND table.\"Indeks\" LIKE '%" + ItemCode + "%' AND table.\"NrRysGot\" LIKE '%" + U_DrawNoFinal + "%' AND table.\"Opis\" LIKE '%" + Description + "%' AND table.\"Stan\" LIKE '" + State + "%'");
+            "LEFT OUTER JOIN  TEMP2 t5 ON t0.\"ItemCode\" = t5.\"ItemCode\"\n" +
+            "WHERE t0.\"U_GospodarkaMaterialowa\" LIKE '1'\n AND IFNULL (t1.\"CardName\", '0') LIKE '%" + Client + "%' AND t0.\"ItemCode\" LIKE '%" + ItemCode + "%' AND IFNULL (t0.\"U_DrawNoFinal\", 'Brak') LIKE '%" + U_DrawNoFinal + "%' AND t0.\"ItemName\" LIKE '%" + Description + "%'" +
+            "ORDER BY t1.\"CardName\"");
             gridPanel.DataTable = dataTable;
+            SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("Indeks");
+            column.LinkedObjectType = "4";
         }
 
 
-        public void fillSecondGridWitchChemicalStocks(SAPbouiCOM.Grid gridPanel, String U_DrawNoFinal)
+        public void fillSecondGridWitchChemicalStocks(SAPbouiCOM.Grid gridPanel, String ItemCode)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
-            dataTable.ExecuteQuery("SELECT DISTINCT\n" +
-            "IFNULL (t0.\"U_DrawNoFinal\", 'Brak rysunku') \"Gotowy\",\n" +
-            "t0.\"ItemName\",\n" +
-            "SUM (t0.\"OnHand\") AS \"Ilość\",\n" +
-            "RIGHT (t1.\"CardCode\", 5) \"Logo\",\n" +
-            "t1.\"CardName\" \"Klient\"\n" +
-            "FROM OITM t0\n" +
-            "INNER JOIN OCRD t1 ON SUBSTR (t0.\"ItemCode\", 4, 5) = RIGHT (t1.\"CardCode\", 5)\n" +
-            "WHERE \"OnHand\" > 0 AND t0.\"U_DrawNoFinal\" LIKE '" + U_DrawNoFinal + "'\n" +
-            "GROUP BY t0.\"U_DrawNoFinal\", t0.\"ItemName\", t1.\"CardName\", t1.\"CardCode\"");
+            dataTable.ExecuteQuery("WITH TEMP0 AS (\n" +
+            " \n" +
+            " SELECT DISTINCT \n" +
+            " t0.\"BaseDocNum\",\n" +
+            " SUM (t0.\"Quantity\") AS \"Ilość\"\n" +
+            " FROM PDN1 t0\n" +
+            " GROUP BY t0.\"BaseDocNum\"\n" +
+            " ),\n" +
+            "\n" +
+            "TEMP AS (\n" +
+            "\n" +
+            "SELECT DISTINCT \n" +
+            "t0.\"DocNum\" \"Numer zamówienia\",\n" +
+            "t0.\"DocDate\"  \"Data zamówienia\",\n" +
+            "t0.\"DocDueDate\" \"Data dostawy\",\n" +
+            "t0.\"CardName\" \"Dostawca\",\n" +
+            "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
+            "t0.\"DocCur\" \"Waluta\",\n" +
+            "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
+            "t0.\"BPLName\" \"Oddział\",\n" +
+            "t2.\"SeriesName\" \"Typ zamówienia\",\n" +
+            "t0.\"DocEntry\",\n" +
+            "t1.\"Quantity\" \"Zamówiono\",\n" +
+            "t1.\"ItemCode\",\n" +
+            "t4.\"Ilość\" \"Dostarczono\",\n" +
+            "(CASE WHEN (SUM (t1.\"Quantity\") = SUM (t4.\"Ilość\")) THEN 'Zrealizowane'\n" +
+            "\t  WHEN (SUM (t1.\"Quantity\") > SUM (t4.\"Ilość\") AND SUM (t4.\"Ilość\") <> 0) THEN 'Częściowo'\n" +
+            "\t  WHEN (SUM (t4.\"Ilość\") IS NULL) THEN 'Niezrealizowane'\n" +
+            "\t  WHEN (SUM (t1.\"Quantity\") < SUM (t4.\"Ilość\")) THEN 'Przekroczone'\n" +
+            "END) AS \"Status\"\n" +
+            "FROM OPOR t0\n" +
+            "INNER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
+            "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
+            "LEFT OUTER JOIN TEMP0 t4 ON t0.\"DocNum\" = t4.\"BaseDocNum\"\n" +
+            "WHERE (t2.\"SeriesName\" LIKE 'MAG-BB' OR t2.\"SeriesName\" LIKE 'MAG-NS')\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"DocEntry\", t1.\"Quantity\", t4.\"Ilość\", t0.\"DocDueDate\", t1.\"ItemCode\"\n" +
+            "\n" +
+            "),\n" +
+            "\n" +
+            "\n" +
+            "TEMP2 AS (\n" +
+            "\n" +
+            "SELECT DISTINCT \"DocEntry\", COUNT (*) AS \"Ilość pozycji\" FROM POR1 GROUP BY \"DocEntry\"\n" +
+            "\n" +
+            "),\n" +
+            "\n" +
+            "\n" +
+            "TEMP3 AS (\n" +
+            "\n" +
+            "SELECT \"DocEntry\", count(\"DocEntry\") AS \"Zrealizowano\"\n" +
+            "FROM POR1 WHERE \"LineStatus\" = 'C' GROUP BY \"DocEntry\"\n" +
+            "\n" +
+            ")\n" +
+            "\n" +
+            "SELECT * FROM\n" +
+            " (SELECT DISTINCT \n" +
+            "\n" +
+            "t1.\"Numer zamówienia\",\n" +
+            "t1.\"Data zamówienia\",\n" +
+            "(CASE WHEN (IFNULL (t1.\"Dostarczono\", 0) = 0) THEN 'Niezrealizowane'\n" +
+            "      WHEN (t1.\"Zamówiono\" > IFNULL(t1.\"Dostarczono\", 0) AND IFNULL (t1.\"Dostarczono\", 0) <> 0) THEN 'Częściowa'\n" +
+            "      ELSE 'nd'\n" +
+            "END) AS \"ReaNazwa\",\n" +
+            "t1.\"Zamówiono\",\n" +
+            "t1.\"Dostarczono\",\n" +
+            "(t1.\"Zamówiono\" - t1.\"Dostarczono\") AS \"Pozost.\",\n" +
+            "t1.\"Data dostawy\",\n" +
+            "t1.\"ItemCode\" \"Indeks\" \n" +
+            "FROM TEMP t1 \n" +
+            "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
+            "WHERE (table.\"ReaNazwa\" LIKE 'Częściowa' OR table.\"ReaNazwa\" LIKE 'Niezrealizowane') AND table.\"Indeks\" LIKE '" + ItemCode + "'");
             gridPanel.DataTable = dataTable;
+
         }
 
 

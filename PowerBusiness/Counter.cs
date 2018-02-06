@@ -32,8 +32,7 @@ namespace PowerBusiness
             {   
                Int32 currentValue = Convert.ToInt32(Grid0.DataTable.GetValue(colID, i));             
                total += currentValue;
-            }
-
+            }   
             return total;
         }
     }

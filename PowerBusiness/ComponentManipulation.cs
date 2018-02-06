@@ -17,6 +17,10 @@ namespace PowerBusiness
         int navyblue = 16754075;
         int vomit = 8168859;
         int bordo = 5512112;
+        int pink = 16717278;
+        int brown = 150710;
+        int random = 1503337120;
+        int next = 60009996;
         
         
         public void changeLabel(SAPbouiCOM.StaticText StaticText0, SAPbouiCOM.StaticText StaticText1, SAPbouiCOM.StaticText StaticText2, SAPbouiCOM.StaticText StaticText3, SAPbouiCOM.StaticText StaticText4, SAPbouiCOM.StaticText StaticText5, SAPbouiCOM.StaticText StaticText6, SAPbouiCOM.StaticText StaticText7, String par1, String par2, String par3, String par4, String par5, String par6, String par7, String par8)
@@ -94,22 +98,22 @@ namespace PowerBusiness
 
                     else if (columnvalue.Equals("Realizacja częściowa"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, darkblue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, random);
                     }
 
                     else if (columnvalue.Equals("Zrealizowane"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, next);
                     }
 
                     else if (columnvalue.Equals("Faktura"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, brown);
                     }
 
-                    else if (columnvalue.Equals("Zablokowane"))
+                    else if (columnvalue.Equals("Archiwum"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);              
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, pink);              
                     }
                 }
             }
@@ -233,10 +237,6 @@ namespace PowerBusiness
                 }
             }
         }
-
-
-        //closing
-
 
         public void closeApplication()
         {
