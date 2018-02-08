@@ -10,16 +10,14 @@ namespace PowerBusiness
         Random random = new Random();
 
         protected long setRandom()
-        {   
+        {
             return random.Next(1, 999999910);
         }
 
         public void getDate(SAPbouiCOM.StaticText textDate)
-        {   
-          
+        {
             String date = DateTime.Now.ToString();
             textDate.Caption = "Stan na " + date;
-
         }
 
         //counting values of certain column
@@ -29,10 +27,10 @@ namespace PowerBusiness
             Int32 total = 0;
 
             for (int i = 0; i < numberOfRows; i++)
-            {   
-               Int32 currentValue = Convert.ToInt32(Grid0.DataTable.GetValue(colID, i));             
-               total += currentValue;
-            }   
+            {
+                Int32 currentValue = Convert.ToInt32(Grid0.DataTable.GetValue(colID, i));
+                total += currentValue;
+            }
             return total;
         }
     }

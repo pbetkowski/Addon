@@ -46,6 +46,7 @@
     <Reference Include="SAPBusinessOneSDK" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication.cs" />
     <Compile Include="ComponentManipulation.cs" />
     <Compile Include="Counter.cs" />
     <Compile Include="SqlClass.cs" />

@@ -530,6 +530,7 @@ namespace PowerBusiness
             "SELECT * FROM\n" +
             " (SELECT DISTINCT \n" +
             "\n" +
+            "t1.\"DocEntry\",\n" +
             "t1.\"Numer zamówienia\",\n" +
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
@@ -546,6 +547,8 @@ namespace PowerBusiness
              "WHERE (table.\"Typ zamówienia\" LIKE 'MAG-BB' OR table.\"Typ zamówienia\" LIKE 'MAG-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Status\" LIKE '%" + Status + "%' AND table.\"Waluta\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND table.\"Oddział\" LIKE '%" + Branch + "%'  \n" +
             "\n");
             gridPanel.DataTable = dataTable;
+            SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("DocEntry");
+            column.LinkedObjectType = "22";
         }
 
         public void fillSecondGridWitchChemicalDetails(SAPbouiCOM.Grid gridPanel, String OrderNumber)
@@ -557,7 +560,9 @@ namespace PowerBusiness
             dataTable.ExecuteQuery("SELECT DISTINCT\n" +
              "t0.\"ItemCode\" \"Indeks\",\n" +
               "t0.\"Dscription\" \"Opis\",\n" +
-               "t0.\"Quantity\" \"Ilość\",\n" +
+              "t0.\"Quantity\" \"Ilość zamówiona\",\n" +
+              "(t0.\"Quantity\" - t0.\"OpenQty\") AS \"Zrealizowano\",\n" +
+              "t0.\"OpenQty\" \"Pozostało do zrealizowania\",\n" +
                "t0.\"Price\" \"Cena jedn.\",\n" +
                 "t0.\"LineTotal\" \"Wartość\",\n" +
                 "t0.\"Currency\" \"Waluta\"\n" +
@@ -696,7 +701,6 @@ namespace PowerBusiness
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
             "WHERE (table.\"ReaNazwa\" LIKE 'Częściowa' OR table.\"ReaNazwa\" LIKE 'Niezrealizowane') AND table.\"Indeks\" LIKE '" + ItemCode + "'");
             gridPanel.DataTable = dataTable;
-
         }
 
 
@@ -831,7 +835,7 @@ namespace PowerBusiness
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
             "t1.\"Uwagi\",\n" +
-            "IFNULL (CAST (t1.\"Status\" AS nvarchar(40)), 'Przekazano do działu zakupów') AS \"Status\" ,\n" +
+            "IFNULL (CAST (t1.\"Status\" AS nvarchar(40)), 'Zakupy') AS \"Status\" ,\n" +
             "t1.\"Typ zamówienia\"\n" +
             "FROM TEMP t1 \n" +
             ") AS table\n" +
@@ -850,7 +854,7 @@ namespace PowerBusiness
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
             dataTable.ExecuteQuery("SELECT \n" +
-            "t1.\"DocNum\" \"Numer zamówienia\",\n" +
+            "t1.\"DocNum\" \"Numer zlecenia\",\n" +
             "t0.\"FreeTxt\" \"Opis\",\n" +
             "t0.\"Quantity\" \"Ilość\",\n" +
             "t0.\"Price\" \"Cena jedn\",\n" +

@@ -156,7 +156,7 @@ namespace PowerBusiness
 
                     else if (columnvalue.Equals("Przekroczone"))
                     {
-                        gridPanel.CommonSetting.SetRowBackColor(i + 1, blue);
+                        gridPanel.CommonSetting.SetRowBackColor(i + 1, vomit);
                     }
 
                 }
