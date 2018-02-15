@@ -26,7 +26,7 @@ namespace PowerBusiness
         "AND T0.\"SessionID\" = CURRENT_CONNECTION");
             grid.DataTable = dataTable;
             String currentDepartment = grid.DataTable.GetValue(0, 0).ToString();
-            dataTable = form.DataSources.DataTables.Add(base.setRandom().ToString());           
+            //dataTable = form.DataSources.DataTables.Add(base.setRandom().ToString());           
             return currentDepartment;
         }
     }

@@ -19,7 +19,6 @@ namespace PowerBusiness
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
-
             dataTable.ExecuteQuery("--set schema \"SBOELECTROPOLI\"\n" +
          "WITH CTE1 AS\n" +
          "(--stan magazynu wraz z ostatnim dokumentem na indeksie\n" +
@@ -403,6 +402,7 @@ namespace PowerBusiness
             "SELECT DISTINCT \n" +
             "t0.\"DocEntry\" \"Link\",\n" +
             "t0.\"DocNum\" \"Numer zamówienia\",\n" +
+            "t0.\"U_Przeznaczenie\" \"Przeznaczenie\",\n" +
             "t0.\"DocDate\"  \"Data zamówienia\",\n" +
             "t0.\"CardName\" \"Dostawca\",\n" +
             "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
@@ -428,7 +428,7 @@ namespace PowerBusiness
             "FROM OPOR t0\n" +
             "INNER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
             "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
-            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"DocEntry\"\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"U_Przeznaczenie\", t0.\"DocEntry\"\n" +
             "\n" +
             "),\n" +
             "\n" +
@@ -456,6 +456,7 @@ namespace PowerBusiness
             "t1.\"Dostawca\",\n" +
             "t1.\"Wartość zamówienia\",\n" +
             "t1.\"Waluta\",\n" +
+            "t1.\"Przeznaczenie\",\n" +
             "t1.\"Uwagi\",\n" +
             "t1.\"Status\",\n" +
             "t1.\"Oddział\",\n" +
@@ -550,7 +551,7 @@ namespace PowerBusiness
             SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("DocEntry");
             column.LinkedObjectType = "22";
         }
-
+        //zamówienia chemiczne-szczegóły
         public void fillSecondGridWitchChemicalDetails(SAPbouiCOM.Grid gridPanel, String OrderNumber)
         {
             temporaryID = base.setRandom();
@@ -573,7 +574,7 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
 
-
+        //gospodarka materiałowa
         public void chemicalStocks(SAPbouiCOM.Grid gridPanel, String Client, String ItemCode, String U_DrawNoFinal, String Description)
         {
             temporaryID = base.setRandom();
@@ -622,7 +623,7 @@ namespace PowerBusiness
             column.LinkedObjectType = "4";
         }
 
-
+        //gospodarka materiałowa - szczegóły
         public void fillSecondGridWitchChemicalStocks(SAPbouiCOM.Grid gridPanel, String ItemCode)
         {
             temporaryID = base.setRandom();
@@ -728,7 +729,7 @@ namespace PowerBusiness
         //    "GROUP BY \"Dscription\", t1.\"ItemCode\", t4.\"U_DrawNoFinal\", t4.\"U_DrawNoRaw\",t2.\"CardName\", t3.\"CardCode\"");
         //    gridPanel.DataTable = dataTable;
         //}
-
+        //sqa
 
         public void sqaDeliveredTotal(SAPbouiCOM.Grid gridPanel, String CardName, String Logo, String DateFrom, String DateTo)
         {
@@ -748,7 +749,7 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
 
-
+        //szczegóły sqa
         public void sqaSecondGrid(SAPbouiCOM.Grid gridPanel, String CardName, String DateFrom, String DateTo)
         {
             temporaryID = base.setRandom();
@@ -763,7 +764,7 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
 
-
+        //dane dla zalogowanego użytkownika
         public void orderStatusForCommoners(SAPbouiCOM.Grid gridPanel, String OrderNumber)
         {
             temporaryID = base.setRandom();
@@ -845,7 +846,7 @@ namespace PowerBusiness
             
             gridPanel.DataTable = dataTable;
         }
-
+        //szczegóły dla zalogowanych
 
         public void fillSecondGridWithOrderDetailsForCommoners(SAPbouiCOM.Grid gridPanel, String OrderNumber)
         {
@@ -864,6 +865,90 @@ namespace PowerBusiness
             "INNER JOIN OPRQ t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
             "WHERE t1.\"DocNum\" LIKE '"+OrderNumber+"'");
             gridPanel.DataTable = dataTable;
+        }
+
+        //wszystkie zlecenia
+
+        public void OPRQForPurchaseDepartment(SAPbouiCOM.Grid gridPanel, String OrderNumber)
+        {
+            temporaryID = base.setRandom();
+            form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
+            dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
+            temporaryID++;
+            dataTable.ExecuteQuery("WITH \n" +
+            "\n" +
+            "TEMP4 AS (\n" +
+            "\n" +
+            "SELECT\n" +
+            " t2.\"Name\",\n" +
+            " t2.\"Code\"\n" +
+            "FROM\n" +
+            "OUDP t2 \n" +
+            "INNER JOIN OUSR T1 ON T2.\"Code\" = t1.\"Department\"\n" +
+            "\n" +
+            "),\n" +
+            "\n" +
+            "TEMP AS (\n" +
+            "\n" +
+            "SELECT DISTINCT \n" +
+            "t10.\"Name\",\n" +
+            "t4.\"U_Przeznaczenie\" \"Przeznaczenie\",\n" +
+            "t4.\"DocNum\" \"Numer zlecenia\",\n" +
+            "t0.\"DocNum\" \"Numer zamówienia\",\n" +
+            "t0.\"DocDate\"  \"Data zamówienia\",\n" +
+            "t0.\"CardName\" \"Dostawca\",\n" +
+            "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
+            "t0.\"DocCur\" \"Waluta\",\n" +
+            "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
+            "(CASE WHEN (t0.\"U_Status_Zam\" = '1') THEN 'Nowe zamówienie'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '2') THEN 'Dyr_Zakładu'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '3') THEN 'Dyr_Zak/Log'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '4') THEN 'Dyr_Finansowy'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '5') THEN 'Zarząd'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'OK'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zablokowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'W toku'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Realizacja częściowa'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zrealizowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'Faktura' \n" +
+            "      WHEN (t0.\"U_Status_Zam\" = '12') THEN 'Archiwum' \n" +
+            "END) AS \"Status\",\n" +
+            "\n" +
+            "t0.\"BPLName\" \"Oddział\",\n" +
+            "t2.\"SeriesName\" \"Typ zamówienia\",\n" +
+            "t4.\"DocEntry\"\n" +
+            "FROM OPOR t0\n" +
+            "RIGHT OUTER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
+            "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
+            "RIGHT OUTER JOIN OPRQ t4 ON t1.\"BaseDocNum\" = t4.\"DocNum\"\n" +
+            "INNER JOIN TEMP4 t10 ON t4.\"Department\" = t10.\"Code\"\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t4.\"DocEntry\", t4.\"DocNum\", t10.\"Name\", t4.\"U_Przeznaczenie\"\n" +
+            "\n" +
+            "\n" +
+            ")\n" +
+            "\n" +
+            "\n" +
+            "SELECT * FROM\n" +
+            " (SELECT DISTINCT \n" +
+            "t1.\"DocEntry\",\n" +
+            "t1.\"Name\" \"Dział wystawiający\",\n" +
+            "t1.\"Przeznaczenie\",\n" +
+            "t1.\"Numer zlecenia\",\n" +
+            "t1.\"Numer zamówienia\",\n" +
+            "t1.\"Data zamówienia\",\n" +
+            "t1.\"Dostawca\",\n" +
+            "t1.\"Uwagi\",\n" +
+            "IFNULL (CAST (t1.\"Status\" AS nvarchar(40)), 'Zakupy') AS \"Status\",\n" +
+            "t1.\"Typ zamówienia\"\n" +
+            "FROM TEMP t1 \n" +
+            ") AS table\n" +
+            "\n" +
+            "WHERE (IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%' OR IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%')\n" +
+            "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%" + OrderNumber + "%'");
+
+            gridPanel.DataTable = dataTable;
+            SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("DocEntry");
+            column.LinkedObjectType = "1470000113";
         }
     }
 }

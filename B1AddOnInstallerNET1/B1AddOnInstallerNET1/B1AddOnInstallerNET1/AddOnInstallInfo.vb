@@ -39,7 +39,7 @@ Namespace AddOnInstaller
         Public Sub New()
             MyBase.New
             'INITIALIZATION CODE	...
-            AddOnName = "Electropoli"
+            AddOnName = "EP"
             PartnerName = "EP"
             RestartNeeded = False
             ExeFile = "PowerBusiness.exe"

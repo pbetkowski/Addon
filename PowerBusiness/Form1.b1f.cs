@@ -60,8 +60,6 @@ namespace PowerBusiness
         Boolean isColored;
         Boolean isSorted;
         List<SAPbouiCOM.EditText> listOfEditText;
-        
-
 
         public Form1()
         {
@@ -128,7 +126,6 @@ namespace PowerBusiness
             this.AuthenticationButton = ((SAPbouiCOM.Button)(this.GetItem("Item_29").Specific));
             this.AuthenticationButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button0_ClickBefore);
             this.OnCustomInitialize();
-
         }
 
         /// <summary>
@@ -185,118 +182,138 @@ namespace PowerBusiness
         {
             try
             {
+
                 cntObj.getDate(StaticText11);
                 CM_Obj.checkIfItemValueIsNull(listOfEditText);
-
                 InitializeVariables();
 
-
-
                 if (isColored == true)
-                {   //TODO spowalnia 
+                {   
                     CM_Obj.cleanRows(Grid0);
                 }
 
+             
+                    if (ComboBox0.Selected.Description == "1")
+                    {
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Numer gotowy", "Opis", "Magazyn", "Lokalizacja", "Kod kreskowy", "Partia klienta");
+                        CM_Obj.changeMainLabel(StaticText8, "Stany na lokalizacjach");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.loadDataIntoTable(Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
+                        this.GetItem("Item_31").Visible = true;
 
-                if (ComboBox0.Selected.Description == "1")
-                {
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Numer gotowy", "Opis", "Magazyn", "Lokalizacja", "Kod kreskowy", "Partia klienta");
-                    CM_Obj.changeMainLabel(StaticText8, "Stany na lokalizacjach");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.loadDataIntoTable(Grid0, par1, par2, par3, par4, par5, par6, par7, par8);
-                    this.GetItem("Item_31").Visible = true;
 
+                    }
+
+                    else if (ComboBox0.Selected.Description == "2")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Nieprzelokalizowane detale");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Klient", "Magazyn", "Lokalizacja", "Kod kreskowy", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.detailsOnSP(Grid0, par1, par2, par3, par4, par5, par6);
+                        this.GetItem("Item_31").Visible = false;
+
+                    }
+
+                    else if (ComboBox0.Selected.Description == "3")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Stany po numerze surowym");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer surowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.u_DrawNoRawSumRaport(Grid0, par1, par2, par3);
+                        this.GetItem("Item_31").Visible = false;
+
+                    }
+
+                    else if (ComboBox0.Selected.Description == "4")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Stany po numerze gotowym");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer gotowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.u_DrawNoFinalSumRaport(Grid0, par1, par2, par3);
+                        this.GetItem("Item_31").Visible = false;
+
+                    }
+
+                    else if (ComboBox0.Selected.Description == "5")
+                    {
+                      
+                        CM_Obj.changeMainLabel(StaticText8, "Zamówienia działu zakupów");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Waluta", "Uwagi", "Status", "Odział", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
+                        CM_Obj.fillWithColorsPurchaseOrder(Grid0, 7);
+                        this.GetItem("Item_31").Visible = false;
+                        isColored = true;
+                     }
+
+                    else if (ComboBox0.Selected.Description == "6")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Zamówienia magazynu chemicznego");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Status", "Waluta", "Uwagi", "Odział", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
+                        CM_Obj.fillWithColorsChemicalOrders(Grid0, 9);
+                        this.GetItem("Item_31").Visible = false;
+                        isColored = true;
+
+                    }
+
+                    else if (ComboBox0.Selected.Description == "7")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Gospodarka materiałowa");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Klient", "Indeks", "Numer gotowy", "Opis", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4);
+                        CM_Obj.fillWithColorsChemicalStock(Grid0, 8);
+                        this.GetItem("Item_31").Visible = false;
+                        isColored = true;
+
+                    }
+
+                    else if (ComboBox0.Selected.Description == "8")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Status zleceń zakupu");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zlecenia zakupu", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.orderStatusForCommoners(Grid0, par1);
+                        CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
+                        this.GetItem("Item_31").Visible = false;
+                        
+                        isColored = true;
+
+                    }
+
+                    else if (ComboBox0.Selected.Description == "9")
+                    {
+
+                        CM_Obj.changeMainLabel(StaticText8, "Sumaryczny raport dostarczonych wyrobów");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Dostawca", "Logo", "Data od:", "Data do:", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        Edit3.String = "2017-01-01";
+                        Edit4.String = "2020-01-01";
+                        SqlExecutor.sqaDeliveredTotal(Grid0, par1, par2, par3, par4);
+                        this.GetItem("Item_31").Visible = false;
+                    }
+
+                    else if (ComboBox0.Selected.Description == "10")
+                    {
+                        CM_Obj.changeMainLabel(StaticText8, "Lista zleceń zakupu");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zlecenia zakupu", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.checkIfItemValueIsNull(listOfEditText);
+                        SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1);
+                        CM_Obj.fillWithColorsPurchaseOrder(Grid0, 8);
+                        this.GetItem("Item_31").Visible = false;
+                        isColored = true;
+                    }
+
+                
                 }
+            
 
-                else if (ComboBox0.Selected.Description == "2")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Nieprzelokalizowane detale");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Indeks", "Numer surowy", "Klient", "Magazyn", "Lokalizacja", "Kod kreskowy", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.detailsOnSP(Grid0, par1, par2, par3, par4, par5, par6);
-                    this.GetItem("Item_31").Visible = false;
-                }
-
-                else if (ComboBox0.Selected.Description == "3")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Stany po numerze surowym");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer surowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.u_DrawNoRawSumRaport(Grid0, par1, par2, par3);
-                    this.GetItem("Item_31").Visible = false;
-                }
-
-                else if (ComboBox0.Selected.Description == "4")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Stany po numerze gotowym");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer gotowy", "Opis", "Klient", "N/D", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.u_DrawNoFinalSumRaport(Grid0, par1, par2, par3);
-                    this.GetItem("Item_31").Visible = false;
-                }
-
-                else if (ComboBox0.Selected.Description == "5")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Zamówienia działu zakupów");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Waluta", "Uwagi", "Status", "Odział", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 7);
-                    this.GetItem("Item_31").Visible = false;
-                    isColored = true;
-                }
-
-                else if (ComboBox0.Selected.Description == "6")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Zamówienia magazynu chemicznego");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Status", "Waluta", "Uwagi", "Odział", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsChemicalOrders(Grid0, 9);
-                    this.GetItem("Item_31").Visible = false;
-                    isColored = true;
-                }
-
-                else if (ComboBox0.Selected.Description == "7")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Gospodarka materiałowa");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Klient", "Indeks", "Numer gotowy", "Opis", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4);
-                    CM_Obj.fillWithColorsChemicalStock(Grid0, 8);
-                    this.GetItem("Item_31").Visible = false;
-                    isColored = true;
-                }
-
-                else if (ComboBox0.Selected.Description == "8")
-                {
-                    CM_Obj.changeMainLabel(StaticText8, "Status zleceń zakupu");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zlecenia zakupu", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    SqlExecutor.orderStatusForCommoners(Grid0, par1);
-                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
-                    this.GetItem("Item_31").Visible = false;
-                    isColored = true;
-                }
-
-                else if (ComboBox0.Selected.Description == "9")
-                {
-
-                    CM_Obj.changeMainLabel(StaticText8, "Sumaryczny raport dostarczonych wyrobów");
-                    CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Dostawca", "Logo", "Data od:", "Data do:", "N/D", "N/D", "N/D", "N/D");
-                    CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                    Edit3.String = "2017-01-01";
-                    Edit4.String = "2020-01-01";
-                    SqlExecutor.sqaDeliveredTotal(Grid0, par1, par2, par3, par4);
-                    this.GetItem("Item_31").Visible = false;
-                }
-
-
-            }
 
             catch (Exception e)
             {
-                // Application.SBO_Application.MessageBox("Załaduj ponownie");
+                 Application.SBO_Application.MessageBox(e.Message);
 
             }
         }
@@ -309,6 +326,7 @@ namespace PowerBusiness
 
                 int index = Grid0.GetDataTableRowIndex(pVal.Row); //get the row number on click
                 SecondPar = Grid0.DataTable.GetValue(pVal.ColUID, index).ToString();  //get the specified col/row value
+                String PurchasePar = Grid0.DataTable.GetValue(1, index).ToString();
                 if (ComboBox0.Selected.Description == "5")
                 {
                     SqlExecutor.fillSecondGridPurchase(Grid1, SecondPar);
@@ -328,13 +346,19 @@ namespace PowerBusiness
 
                 else if (ComboBox0.Selected.Description == "8")
                 {
-                    SqlExecutor.fillSecondGridWithOrderDetailsForCommoners(Grid1, SecondPar);
+                    SqlExecutor.fillSecondGridWithOrderDetailsForCommoners(Grid1, PurchasePar);
                 }
 
                 else if (ComboBox0.Selected.Description == "9")
                 {
                     SqlExecutor.sqaSecondGrid(Grid1, SecondPar, par3, par4);
                 }
+
+                else if (ComboBox0.Selected.Description == "10")
+                {
+                    SqlExecutor.fillSecondGridWithOrderDetailsForCommoners(Grid1, SecondPar);
+                }
+
 
                 else
                 {
@@ -462,7 +486,7 @@ namespace PowerBusiness
                 else if (ComboBox0.Selected.Description == "5")  //lista zamówień
                 {
                     SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 7);
+                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 8);
                 }
 
                 else if (ComboBox0.Selected.Description == "6")  //lista zamówień magazynu chemicznego
@@ -488,6 +512,12 @@ namespace PowerBusiness
                 {
                     SqlExecutor.sqaDeliveredTotal(Grid0, par1, par2, par3, par4);
                 }
+
+                else if (ComboBox0.Selected.Description == "10")  //zlecenia zakupu
+                {
+                    SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1);
+                    CM_Obj.fillWithColorsPurchaseOrder(Grid0, 8);
+                }
             }
 
             catch (Exception)
@@ -505,6 +535,9 @@ namespace PowerBusiness
                 // Grid0.Columns.Item("Indeks").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
                 // this.Grid0.Item.Width = 1200;
                 // Grid0.Columns.Item("ItemCode").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
+               // authentication.returnDepartment(Grid2);
+
+                Application.SBO_Application.ActivateMenuItem("ff");
 
             }
 
@@ -539,16 +572,13 @@ namespace PowerBusiness
         private void Button0_ClickBefore(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
         {
             BubbleEvent = true;
-            this.GetItem("Item_19").Enabled = true;
+            this.GetItem("Item_19").Enabled = true;          
             if (!authentication.returnDepartment(Grid2).Equals("88"))
             {
                 this.ComboBox0.ValidValues.Remove("Zamówienia działu zakupów");
                 this.ComboBox0.ValidValues.Remove("Zamówienia magazynu chemicznego");
-
             }
             this.GetItem("Item_29").Visible = false;
         }
-
-
     }
 }
