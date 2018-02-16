@@ -391,35 +391,62 @@ namespace PowerBusiness
             gridPanel.DataTable = dataTable;
         }
         //zamówienia działu zakupów
-        public void purchaseOrdersRapport(SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Currency, String Comments, String Status, String Branch)
+        public void purchaseOrdersRapport(SAPbouiCOM.Grid gridPanel, String OrderNumber, String Supplier, String Currency, String Comments, String Status, String Branch, String U_Przeznaczenie)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
             dataTable = form.DataSources.DataTables.Add(temporaryID.ToString());
             temporaryID++;
-            dataTable.ExecuteQuery("WITH TEMP AS (\n" +
+            dataTable.ExecuteQuery("WITH \n" +
+            "--wartość pozycji w zamówieniach przy walutach obcych, pomniejszone o zafakturowane/przyjęte pozycje \n" +
+            "temp666 AS\n" +
+            "(\n" +
+            " SELECT DISTINCT\n" +
+            " t0.\"DocEntry\",\n" +
+            " SUM(t1.\"OpenQty\" * IFNULL (t1.\"Price\", 0) * t1.\"Rate\") AS \"Euro\"  \n" +
+            " FROM OPOR t0\n" +
+            " INNER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
+            " WHERE t1.\"Currency\" NOT LIKE 'PLN' \n" +
+            " GROUP BY t0.\"DocEntry\"\n" +
             "\n" +
+            "\n" +
+            "),\n" +
+            "--wartość pozycji w zamówieniach przy PLN pomniejszone o zafakturowane/przyjęte pozycje \n" +
+            "temp777 AS\n" +
+            "(\n" +
+            " SELECT DISTINCT\n" +
+            " t0.\"DocEntry\",\n" +
+            " SUM(t1.\"OpenQty\" * IFNULL (t1.\"Price\", 0)) AS \"PLN\"  \n" +
+            " FROM OPOR t0\n" +
+            " INNER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
+            " WHERE t1.\"Currency\" LIKE 'PLN'  \n" +
+            " GROUP BY t0.\"DocEntry\"\n" +
+            "\n" +
+            "\n" +
+            "),\n" +
+            "\n" +
+            "\n" +
+            "TEMP AS (\n" +
+            "--tabela pomocniczna\n" +
             "SELECT DISTINCT \n" +
-            "t0.\"DocEntry\" \"Link\",\n" +
             "t0.\"DocNum\" \"Numer zamówienia\",\n" +
-            "t0.\"U_Przeznaczenie\" \"Przeznaczenie\",\n" +
             "t0.\"DocDate\"  \"Data zamówienia\",\n" +
             "t0.\"CardName\" \"Dostawca\",\n" +
-            "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
-            "t0.\"DocCur\" \"Waluta\",\n" +
+            "ROUND ((IFNULL (t12.\"Euro\", 0) + IFNULL (t13.\"PLN\",0)),2) AS \"Wartość w PLN\",\n" +
+            "t0.\"DocCur\" \"Waluta dokumentu\",\n" +
+            "t0.\"U_Przeznaczenie\" \"Przeznaczenie\",\n" +
             "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
             "(CASE WHEN (t0.\"U_Status_Zam\" = '1') THEN 'Nowe zamówienie'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '2') THEN 'Dyr_Zakładu'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '3') THEN 'Dyr_Zak/Log'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '4') THEN 'Dyr_Finansowy'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '5') THEN 'Zarząd'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'OK'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zablokowane'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'W toku'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Realizacja częściowa'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zrealizowane'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'Faktura'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '12') THEN 'Archiwum' \n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'W toku'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zrealizowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'Realizacja częściowa'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Archiwum'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zablokowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'OK' \n" +
             "END) AS \"Status\",\n" +
             "\n" +
             "t0.\"BPLName\" \"Oddział\",\n" +
@@ -428,11 +455,13 @@ namespace PowerBusiness
             "FROM OPOR t0\n" +
             "INNER JOIN POR1 t1 ON t0.\"DocEntry\" = t1.\"DocEntry\"\n" +
             "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
-            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"U_Przeznaczenie\", t0.\"DocEntry\"\n" +
+            "LEFT OUTER JOIN temp666 t12 ON t0.\"DocEntry\" = t12.\"DocEntry\"\n" +
+            "LEFT OUTER JOIN temp777 t13 ON t0.\"DocEntry\" = t13.\"DocEntry\"\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"U_Przeznaczenie\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t0.\"DocEntry\", t1.\"Currency\", t12.\"Euro\", t13.\"PLN\"\n" +
             "\n" +
             "),\n" +
             "\n" +
-            "\n" +
+            "--tabela pomocniczna\n" +
             "\n" +
             "TEMP2 AS (\n" +
             "\n" +
@@ -440,7 +469,7 @@ namespace PowerBusiness
             "\n" +
             "),\n" +
             "\n" +
-            "\n" +
+            "--zrealizowane pozycje\n" +
             "TEMP3 AS (\n" +
             "\n" +
             "SELECT \"DocEntry\", count(\"DocEntry\") AS \"Zrealizowano\"\n" +
@@ -448,15 +477,15 @@ namespace PowerBusiness
             "\n" +
             ")\n" +
             "\n" +
-            "SELECT * FROM (SELECT DISTINCT \n" +
-            "\n" +
-            "t1.\"Link\",\n" +
+            "SELECT DISTINCT * FROM\n" +
+            " (SELECT DISTINCT \n" +
+            "t1.\"DocEntry\" \"Link\",\n" +
             "t1.\"Numer zamówienia\",\n" +
+            "t1.\"Przeznaczenie\",\n" +
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
-            "t1.\"Wartość zamówienia\",\n" +
-            "t1.\"Waluta\",\n" +
-            "t1.\"Przeznaczenie\",\n" +
+            "t1.\"Wartość w PLN\",\n" +
+            "t1.\"Waluta dokumentu\",\n" +
             "t1.\"Uwagi\",\n" +
             "t1.\"Status\",\n" +
             "t1.\"Oddział\",\n" +
@@ -464,7 +493,8 @@ namespace PowerBusiness
             "FROM TEMP t1 \n" +
             "INNER JOIN TEMP2 t2 on t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
-            "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Waluta\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND IFNULL (\"Status\", '1') LIKE '%" + Status + "%' AND table.\"Oddział\" LIKE '%" + Branch + "%'");
+            "\n" +
+            "WHERE (table.\"Typ zamówienia\" LIKE 'ZAK-BB' OR table.\"Typ zamówienia\" LIKE 'ZAK-NS') AND table.\"Numer zamówienia\" LIKE '" + OrderNumber + "%' AND table.\"Dostawca\" LIKE '%" + Supplier + "%' AND table.\"Waluta dokumentu\" LIKE '%" + Currency + "%' AND IFNULL (\"Uwagi\", '1') LIKE '%" + Comments + "%' AND IFNULL (\"Status\", '1') LIKE '%" + Status + "%' AND table.\"Oddział\" LIKE '%" + Branch + "%' AND IFNULL (table.\"Przeznaczenie\", '1') LIKE '%"+U_Przeznaczenie+"%'");
             gridPanel.DataTable = dataTable;
             SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("Link");
             column.LinkedObjectType = "22";
@@ -869,7 +899,7 @@ namespace PowerBusiness
 
         //wszystkie zlecenia
 
-        public void OPRQForPurchaseDepartment(SAPbouiCOM.Grid gridPanel, String OrderNumber)
+        public void OPRQForPurchaseDepartment(SAPbouiCOM.Grid gridPanel, String OrderNumber, String purpose)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -944,11 +974,13 @@ namespace PowerBusiness
             ") AS table\n" +
             "\n" +
             "WHERE (IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%' OR IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%')\n" +
-            "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%" + OrderNumber + "%'");
+            "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%" + OrderNumber + "%' AND IFNULL (table.\"Przeznaczenie\", '1') LIKE '%" + purpose + "%'");
 
             gridPanel.DataTable = dataTable;
             SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("DocEntry");
             column.LinkedObjectType = "1470000113";
+
+           
         }
     }
 }
