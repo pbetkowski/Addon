@@ -638,6 +638,7 @@ namespace PowerBusiness
             "t0.\"ItemName\" \"Opis\",\n" +
             "t0.\"InvntryUom\" \"jm\",\n" +
             "t0.\"U_MinQty\" \"Ilość min\",\n" +
+            "t0.\"U_WartoscZamawiana\" \"Ilość zamawiana\",\n" +
             "t0.\"OnHand\" \"Stan sur\",\n" +
             "IFNULL (t5.\"Linia\",0) \"Stan lin\",\n" +
             "(CASE WHEN (t0.\"OnHand\" > t0.\"U_MinQty\" ) THEN 'OK'\n" +
@@ -899,7 +900,7 @@ namespace PowerBusiness
 
         //wszystkie zlecenia
 
-        public void OPRQForPurchaseDepartment(SAPbouiCOM.Grid gridPanel, String OrderNumber, String purpose)
+        public void OPRQForPurchaseDepartment(SAPbouiCOM.Grid gridPanel, String OrderNumber, String purpose, String department, String status)
         {
             temporaryID = base.setRandom();
             form = (SAPbouiCOM.Form)SAPbouiCOM.Framework.Application.SBO_Application.Forms.ActiveForm;
@@ -974,7 +975,7 @@ namespace PowerBusiness
             ") AS table\n" +
             "\n" +
             "WHERE (IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%' OR IFNULL (table.\"Typ zamówienia\", '1') LIKE '%%')\n" +
-            "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%" + OrderNumber + "%' AND IFNULL (table.\"Przeznaczenie\", '1') LIKE '%" + purpose + "%'");
+            "AND IFNULL (table.\"Uwagi\", '1') LIKE '%%' AND IFNULL (\"Status\", '1') LIKE '%%' AND table.\"Numer zlecenia\" LIKE '%" + OrderNumber + "%' AND IFNULL (table.\"Przeznaczenie\", '1') LIKE '%" + purpose + "%' AND IFNULL (table.\"Dział wystawiający\", '1') LIKE '%" + department + "%' AND IFNULL (table.\"Status\", '1') LIKE '%" + status + "%'");
 
             gridPanel.DataTable = dataTable;
             SAPbouiCOM.EditTextColumn column = (SAPbouiCOM.EditTextColumn)gridPanel.Columns.Item("DocEntry");

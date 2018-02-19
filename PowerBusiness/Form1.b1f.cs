@@ -264,7 +264,7 @@ namespace PowerBusiness
                         CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Klient", "Indeks", "Numer gotowy", "Opis", "N/D", "N/D", "N/D", "N/D");
                         CM_Obj.checkIfItemValueIsNull(listOfEditText);
                         SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4);
-                        CM_Obj.fillWithColorsChemicalStock(Grid0, 8);
+                        CM_Obj.fillWithColorsChemicalStock(Grid0, 9);
                         this.GetItem("Item_31").Visible = false;
                         isColored = true;
 
@@ -298,9 +298,9 @@ namespace PowerBusiness
                     else if (ComboBox0.Selected.Description == "10")
                     {
                         CM_Obj.changeMainLabel(StaticText8, "Lista zleceń zakupu");
-                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zlecenia zakupu", "Przeznaczenie", "N/D", "N/D", "N/D", "N/D", "N/D", "N/D");
+                        CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zlecenia zakupu", "Przeznaczenie", "Dział wystawiający", "Status", "N/D", "N/D", "N/D", "N/D");
                         CM_Obj.checkIfItemValueIsNull(listOfEditText);
-                        SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1, par2);
+                        SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1, par2, par3, par4);
                         CM_Obj.fillWithColorsPurchaseOrder(Grid0, 8);
                         this.GetItem("Item_31").Visible = false;
                         isColored = true;
@@ -461,6 +461,11 @@ namespace PowerBusiness
             InitializeVariables();
             cntObj.getDate(StaticText11);
             SecondPar = "";
+            if (isColored == true)
+            {
+                CM_Obj.cleanRows(Grid0);
+            }
+
             try
             {
                 if (ComboBox0.Selected.Description == "1")  //1 if "stany na lokalizacjach"
@@ -492,12 +497,13 @@ namespace PowerBusiness
                 else if (ComboBox0.Selected.Description == "6")  //lista zamówień magazynu chemicznego
                 {
                     SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsChemicalOrders(Grid0, 9);
+                    CM_Obj.fillWithColorsChemicalOrders(Grid0, 10);
                 }
 
                 else if (ComboBox0.Selected.Description == "7")  //gospodarka materiałowa
                 {
                     SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4);
+                    CM_Obj.fillWithColorsChemicalStock(Grid0, 9);
 
                 }
 
@@ -515,8 +521,9 @@ namespace PowerBusiness
 
                 else if (ComboBox0.Selected.Description == "10")  //zlecenia zakupu
                 {
-                    SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1, par2);
+                    SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1, par2, par3, par4);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 8);
+                   
                 }
             }
 
