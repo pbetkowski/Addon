@@ -379,6 +379,7 @@ namespace PowerBusiness
             temporaryID++;
             dataTable.ExecuteQuery("SELECT DISTINCT\n" +
              "t0.\"ItemCode\" \"Indeks\",\n" +
+               "t0.\"BaseDocNum\" \"Zlecenie bazowe\",\n" +
               "t0.\"FreeTxt\" \"Opis (ręczny)\",\n" +
                "t0.\"Quantity\" \"Ilość\",\n" +
                "t0.\"Price\" \"Cena jedn.\",\n" +
@@ -441,12 +442,13 @@ namespace PowerBusiness
             "\t  WHEN (t0.\"U_Status_Zam\" = '3') THEN 'Dyr_Zak/Log'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '4') THEN 'Dyr_Finansowy'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '5') THEN 'Zarząd'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'W toku'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zrealizowane'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'Realizacja częściowa'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Archiwum'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zablokowane'\n" +
-            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'OK' \n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '6') THEN 'OK'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '7') THEN 'Zablokowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '8') THEN 'W toku'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '9') THEN 'Realizacja częściowa'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '10') THEN 'Zrealizowane'\n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '11') THEN 'Faktura' \n" +
+            "\t  WHEN (t0.\"U_Status_Zam\" = '12') THEN 'Archiwum' \n" +
             "END) AS \"Status\",\n" +
             "\n" +
             "t0.\"BPLName\" \"Oddział\",\n" +
@@ -483,11 +485,11 @@ namespace PowerBusiness
             "t1.\"Numer zamówienia\",\n" +
             "t1.\"Przeznaczenie\",\n" +
             "t1.\"Data zamówienia\",\n" +
+            "t1.\"Status\",\n" +
             "t1.\"Dostawca\",\n" +
             "t1.\"Wartość w PLN\",\n" +
             "t1.\"Waluta dokumentu\",\n" +
             "t1.\"Uwagi\",\n" +
-            "t1.\"Status\",\n" +
             "t1.\"Oddział\",\n" +
             "t1.\"Typ zamówienia\"\n" +
             "FROM TEMP t1 \n" +
@@ -566,11 +568,11 @@ namespace PowerBusiness
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
             "t1.\"Wartość zamówienia\",\n" +
+            "t1.\"Status\",\n" +
             "t1.\"Waluta\",\n" +
             "t1.\"Uwagi\",\n" +
             "t1.\"Oddział\",\n" +
-            "t1.\"Typ zamówienia\",\n" +
-            "t1.\"Status\"\n" +
+            "t1.\"Typ zamówienia\"\n" +
             "FROM TEMP t1 \n" +
             "--INNER JOIN TEMP2 t2 on t1.\"DocEntry\" = t2.\"DocEntry\"\n" +
             "LEFT OUTER JOIN TEMP3 t3 on t1.\"DocEntry\" = t3.\"DocEntry\") AS table\n" +
@@ -925,12 +927,13 @@ namespace PowerBusiness
             "t10.\"Name\",\n" +
             "t4.\"U_Przeznaczenie\" \"Przeznaczenie\",\n" +
             "t4.\"DocNum\" \"Numer zlecenia\",\n" +
+            "t4.\"ReqDate\" \"Data zlecenia\",\n" +
             "t0.\"DocNum\" \"Numer zamówienia\",\n" +
             "t0.\"DocDate\"  \"Data zamówienia\",\n" +
             "t0.\"CardName\" \"Dostawca\",\n" +
             "SUM (t1.\"OpenQty\" * t1.\"Price\") AS \"Wartość zamówienia\",\n" +
             "t0.\"DocCur\" \"Waluta\",\n" +
-            "t0.\"U_Purchase_Comments\" \"Uwagi\",\n" +
+            "t4.\"Comments\" \"Uwagi\",\n" +
             "(CASE WHEN (t0.\"U_Status_Zam\" = '1') THEN 'Nowe zamówienie'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '2') THEN 'Dyr_Zakładu'\n" +
             "\t  WHEN (t0.\"U_Status_Zam\" = '3') THEN 'Dyr_Zak/Log'\n" +
@@ -953,7 +956,7 @@ namespace PowerBusiness
             "INNER JOIN NNM1 t2 ON t0.\"Series\" = t2.\"Series\"\n" +
             "RIGHT OUTER JOIN OPRQ t4 ON t1.\"BaseDocNum\" = t4.\"DocNum\"\n" +
             "INNER JOIN TEMP4 t10 ON t4.\"Department\" = t10.\"Code\"\n" +
-            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t0.\"U_Purchase_Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t4.\"DocEntry\", t4.\"DocNum\", t10.\"Name\", t4.\"U_Przeznaczenie\"\n" +
+            "GROUP BY t0.\"DocCur\", t0.\"DocNum\", t0.\"DocDate\", t0.\"CardName\", t4.\"ReqDate\", t4.\"Comments\", t0.\"U_Status_Zam\", t0.\"BPLName\" , t2.\"SeriesName\", t4.\"DocEntry\", t4.\"DocNum\", t10.\"Name\", t4.\"U_Przeznaczenie\"\n" +
             "\n" +
             "\n" +
             ")\n" +
@@ -964,12 +967,13 @@ namespace PowerBusiness
             "t1.\"DocEntry\",\n" +
             "t1.\"Name\" \"Dział wystawiający\",\n" +
             "t1.\"Przeznaczenie\",\n" +
+            "IFNULL (CAST (t1.\"Status\" AS nvarchar(40)), 'Zakupy') AS \"Status\",\n" +
             "t1.\"Numer zlecenia\",\n" +
+            "t1.\"Data zlecenia\",\n" +
             "t1.\"Numer zamówienia\",\n" +
             "t1.\"Data zamówienia\",\n" +
             "t1.\"Dostawca\",\n" +
             "t1.\"Uwagi\",\n" +
-            "IFNULL (CAST (t1.\"Status\" AS nvarchar(40)), 'Zakupy') AS \"Status\",\n" +
             "t1.\"Typ zamówienia\"\n" +
             "FROM TEMP t1 \n" +
             ") AS table\n" +
