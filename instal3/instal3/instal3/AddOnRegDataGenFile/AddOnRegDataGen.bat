@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\SAP\SAP Business One SDK\Tools\AddOnRegDataGen\AddOnRegDataGen.exe" "C:\Przemek\Backup\Main\instal3\instal3\instal3\AddOnRegDataGenFile\instal3.xml" "1.0.0.0" "C:\Przemek\Backup\Main\instal3\instal3\instal3\bin\instal3.exe" "C:\Przemek\Backup\Main\instal3\instal3\instal3\bin\instal3.exe" "C:\Przemek\Backup\Main\PowerBusiness\bin\Debug\PowerBusiness.exe"

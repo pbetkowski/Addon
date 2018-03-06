@@ -61,10 +61,10 @@
     <Reference Include="SAPBusinessOneSDK" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication.cs" />
-    <Compile Include="ComponentManipulation.cs" />
-    <Compile Include="Counter.cs" />
-    <Compile Include="SqlClass.cs" />
+    <Compile Include="ReportClasses\Authentication.cs" />
+    <Compile Include="ReportClasses\ComponentManipulation.cs" />
+    <Compile Include="ReportClasses\Counter.cs" />
+    <Compile Include="ReportClasses\SqlClass.cs" />
     <None Include="Form1.b1f">
       <FormCategory>UserForm</FormCategory>
     </None>

@@ -115,9 +115,9 @@ namespace PowerBusiness
             this.Button2.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button2_ClickBefore);
             this.HelpButton = ((SAPbouiCOM.Button)(this.GetItem("Item_28").Specific));
             this.HelpButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.HelpButton_ClickBefore);
-            //    
+            //     
             this.listOfEditText = this.CM_Obj.addItemsToList(this.Edit0, this.Edit1, this.Edit2, this.Edit3, this.Edit4, this.Edit5, this.Edit6, this.Edit7, this.Edit8);
-            //    
+            //     
             this.CountButton = ((SAPbouiCOM.Button)(this.GetItem("Item_31").Specific));
             this.CountButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.CountTotal);
             this.GetItem("Item_31").Visible = false;
@@ -126,6 +126,7 @@ namespace PowerBusiness
             this.AuthenticationButton = ((SAPbouiCOM.Button)(this.GetItem("Item_29").Specific));
             this.AuthenticationButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button0_ClickBefore);
             this.OnCustomInitialize();
+
         }
 
         /// <summary>
@@ -182,15 +183,13 @@ namespace PowerBusiness
         {
             try
             {
-
+                if (isColored == true)
+                {
+                    CM_Obj.cleanRows(Grid0);
+                }
                 cntObj.getDate(StaticText11);
                 CM_Obj.checkIfItemValueIsNull(listOfEditText);
                 InitializeVariables();
-
-                if (isColored == true)
-                {   
-                    CM_Obj.cleanRows(Grid0);
-                }
 
              
                     if (ComboBox0.Selected.Description == "1")
@@ -241,7 +240,7 @@ namespace PowerBusiness
                         CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Waluta", "Uwagi", "Status", "Odział", "Przeznaczenie", "N/D");
                         CM_Obj.checkIfItemValueIsNull(listOfEditText);
                         SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6, par7);
-                        CM_Obj.fillWithColorsPurchaseOrder(Grid0, 4);
+                        CM_Obj.fillWithColorsPurchaseOrder(Grid0, 5);
                         this.GetItem("Item_31").Visible = false;
                         isColored = true;
                      }
@@ -252,7 +251,7 @@ namespace PowerBusiness
                         CM_Obj.changeLabel(StaticText0, StaticText1, StaticText2, StaticText3, StaticText4, StaticText5, StaticText6, StaticText7, "Numer zamówienia", "Dostawca", "Status", "Waluta", "Uwagi", "Odział", "N/D", "N/D");
                         CM_Obj.checkIfItemValueIsNull(listOfEditText);
                         SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
-                        CM_Obj.fillWithColorsChemicalOrders(Grid0, 5);
+                        CM_Obj.fillWithColorsChemicalOrders(Grid0, 9);
                         this.GetItem("Item_31").Visible = false;
                         isColored = true;
 
@@ -492,18 +491,21 @@ namespace PowerBusiness
                 {
                     SqlExecutor.purchaseOrdersRapport(Grid0, par1, par2, par3, par4, par5, par6, par7);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 4);
+                    isColored = true;
                 }
 
                 else if (ComboBox0.Selected.Description == "6")  //lista zamówień magazynu chemicznego
                 {
                     SqlExecutor.chemicalOrdersReport(Grid0, par1, par2, par3, par4, par5, par6);
-                    CM_Obj.fillWithColorsChemicalOrders(Grid0, 9);
+                    CM_Obj.fillWithColorsChemicalOrders(Grid0, 5);
+                    isColored = true;
                 }
 
                 else if (ComboBox0.Selected.Description == "7")  //gospodarka materiałowa
                 {
                     SqlExecutor.chemicalStocks(Grid0, par1, par2, par3, par4);
                     CM_Obj.fillWithColorsChemicalStock(Grid0, 9);
+                    isColored = true;
 
                 }
 
@@ -511,6 +513,7 @@ namespace PowerBusiness
                 {
                     SqlExecutor.orderStatusForCommoners(Grid0, par1);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 6);
+                    isColored = true;
 
                 }
 
@@ -523,6 +526,7 @@ namespace PowerBusiness
                 {
                     SqlExecutor.OPRQForPurchaseDepartment(Grid0, par1, par2, par3, par4);
                     CM_Obj.fillWithColorsPurchaseOrder(Grid0, 8);
+                    isColored = true;
                    
                 }
             }
@@ -594,5 +598,6 @@ namespace PowerBusiness
             }
             this.GetItem("Item_29").Visible = false;
         }
+
     }
 }
