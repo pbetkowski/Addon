@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using SAPbouiCOM.Framework;
 using PowerBusiness;
+using PowerBusiness.Shared;
 
 namespace PowerBusiness
 {
@@ -60,7 +61,7 @@ namespace PowerBusiness
         Boolean isColored;
         Boolean isSorted;
         List<SAPbouiCOM.EditText> listOfEditText;
-
+        #region frameworkSpam
         public Form1()
         {
         }
@@ -68,6 +69,8 @@ namespace PowerBusiness
         /// <summary>
         /// Initialize components. Called by framework after form created.
         /// </summary>
+        /// 
+       
         public override void OnInitializeComponent()
         {
             this.Grid0 = ((SAPbouiCOM.Grid)(this.GetItem("Item_0").Specific));
@@ -129,9 +132,7 @@ namespace PowerBusiness
 
         }
 
-        /// <summary>
-        /// Initialize form event. Called by framework before form creation.
-        /// </summary>
+        #endregion
         public override void OnInitializeFormEvents()
         {
 
@@ -165,7 +166,6 @@ namespace PowerBusiness
             InitializeVariables();
             cntObj.getDate(StaticText11);
             SecondPar = "";
-            //   column = columns.Add("#", SAPbouiCOM.BoFormItemTypes.it_EDIT);
 
             try
             {
@@ -555,6 +555,7 @@ namespace PowerBusiness
             catch (Exception e)
             {
                 Application.SBO_Application.MessageBox(e.Message);
+                InfoBoxes.UseMessageBox(e.Message);
             }
 
         }
@@ -575,7 +576,8 @@ namespace PowerBusiness
         private void CountTotal(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
         {
             BubbleEvent = true;
-            Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
+           // Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
+            InfoBoxes.UseMessageBox(cntObj.countTotal(Grid0, 8));
         }
 
 

@@ -33,3 +33,11 @@ C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\PowerBusiness.pdb
 C:\Przemek\Backup\Main\PowerBusiness\bin\Debug\PowerBusiness.exe
 C:\Przemek\Backup\Main\PowerBusiness\bin\Debug\PowerBusiness.pdb
 C:\Przemek\Backup\Main\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\obj\Debug\Interop.SAPbobsCOM.dll
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\obj\Debug\PowerBusiness.csproj.ResolveComReference.cache
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\obj\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\obj\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\bin\Debug\PowerBusiness.exe
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\bin\Debug\PowerBusiness.pdb
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\bin\Debug\SAPBusinessOneSDK.dll
+C:\Users\pbetkows\Desktop\addon\Addon\PowerBusiness\obj\Debug\PowerBusiness.csprojResolveAssemblyReference.cache
