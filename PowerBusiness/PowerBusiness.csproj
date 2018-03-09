@@ -64,6 +64,7 @@
     <Compile Include="DeliveryNote.b1f.cs">
       <DependentUpon>DeliveryNote.b1f</DependentUpon>
     </Compile>
+    <Compile Include="Engine\MenuModifications.cs" />
     <Compile Include="GoodsReceive.b1f.cs">
       <DependentUpon>GoodsReceive.b1f</DependentUpon>
     </Compile>

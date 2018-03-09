@@ -164,7 +164,7 @@ namespace PowerBusiness
 
             catch (Exception e)
             {
-                Application.SBO_Application.MessageBox(e.Message);
+                
             }
         }
              public void fillWithColorsChemicalStock(SAPbouiCOM.Grid gridPanel, int columnIndex)

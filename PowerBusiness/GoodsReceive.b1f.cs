@@ -17,9 +17,7 @@ namespace PowerBusiness
         {
         }
 
-        /// <summary>
-        /// Initialize components. Called by framework after form created.
-        /// </summary>
+ #region frameworkSpam
         public override void OnInitializeComponent()
         {
             this.CountButton = ((SAPbouiCOM.Button)(this.GetItem("Item_0").Specific));
@@ -30,9 +28,7 @@ namespace PowerBusiness
 
         }
 
-        /// <summary>
-        /// Initialize form event. Called by framework before form creation.
-        /// </summary>
+
         public override void OnInitializeFormEvents()
         {
         }
@@ -44,8 +40,8 @@ namespace PowerBusiness
 
         }
 
-        
 
+        #endregion
         private void CountButton_ClickBefore(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
         {
             BubbleEvent = true;

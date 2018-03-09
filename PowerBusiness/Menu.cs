@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using PowerBusiness.Engine;
 using SAPbouiCOM.Framework;
+using PowerBusiness.Shared;
 
 namespace PowerBusiness
 {
@@ -9,8 +11,9 @@ namespace PowerBusiness
     {
         public void AddMenuItems()
         {
-            SAPbouiCOM.Menus oMenus = null;
-            SAPbouiCOM.MenuItem oMenuItem = null;
+            SAPbouiCOM.Menus oMenus;
+            SAPbouiCOM.MenuItem oMenuItem;
+            MenuModifications modifications = new MenuModifications();
 
             oMenus = Application.SBO_Application.Menus;
 
@@ -33,24 +36,22 @@ namespace PowerBusiness
             }
             catch (Exception)
             {
-
+               
             }
 
             try
-            {
-                // Get the menu collection of the newly added pop-up item
-                oMenuItem = Application.SBO_Application.Menus.Item("PowerBusiness");
-                oMenus = oMenuItem.SubMenus;
+                {
+                 // Get the menu collection of the newly added pop-up item
+                     oMenuItem = Application.SBO_Application.Menus.Item("PowerBusiness");
+                     oMenus = oMenuItem.SubMenus;
 
-                // Create s sub menu
-                oCreationPackage.Type = SAPbouiCOM.BoMenuType.mt_STRING;
-                oCreationPackage.UniqueID = "PowerBusiness.Form1";
-                oCreationPackage.String = "System raportów";
-                oMenus.AddEx(oCreationPackage);
-            }
+                     // Create s sub menu
+                    modifications.addMenuItem("PowerBusiness.Form1", "System raportów", oMenus, oCreationPackage);
+                
+                 }
             catch (Exception)
-            { //  Menu already exists
-                Application.SBO_Application.StatusBar.SetText("Nadpisano strukturę menu.", SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Success);
+            {
+                InfoBoxes.StatusBarSucces("Nadpisano strukturę menu");
             }
         }
 
@@ -66,11 +67,10 @@ namespace PowerBusiness
                     activeForm.Show();
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Application.SBO_Application.MessageBox(ex.ToString(), 1, "Ok", "", "");
+                InfoBoxes.UseMessageBox(e.Message);
             }
         }
-
     }
 }

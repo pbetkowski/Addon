@@ -22,5 +22,10 @@ namespace PowerBusiness.Shared
         {
             Application.SBO_Application.MessageBox(message.ToString());
         }
+
+        public static void StatusBarSucces(String message)
+        {
+            Application.SBO_Application.StatusBar.SetText(message, SAPbouiCOM.BoMessageTime.bmt_Short, SAPbouiCOM.BoStatusBarMessageType.smt_Success);
+        }
     }
 }

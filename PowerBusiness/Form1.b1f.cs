@@ -116,8 +116,7 @@ namespace PowerBusiness
             this.StaticText11 = ((SAPbouiCOM.StaticText)(this.GetItem("Item_26").Specific));
             this.Button2 = ((SAPbouiCOM.Button)(this.GetItem("Item_27").Specific));
             this.Button2.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.Button2_ClickBefore);
-            this.HelpButton = ((SAPbouiCOM.Button)(this.GetItem("Item_28").Specific));
-            this.HelpButton.ClickBefore += new SAPbouiCOM._IButtonEvents_ClickBeforeEventHandler(this.HelpButton_ClickBefore);
+
             //     
             this.listOfEditText = this.CM_Obj.addItemsToList(this.Edit0, this.Edit1, this.Edit2, this.Edit3, this.Edit4, this.Edit5, this.Edit6, this.Edit7, this.Edit8);
             //     
@@ -132,7 +131,7 @@ namespace PowerBusiness
 
         }
 
-        #endregion
+       
         public override void OnInitializeFormEvents()
         {
 
@@ -145,7 +144,7 @@ namespace PowerBusiness
 
         }
 
-
+        #endregion
 
         //get value from the EditText
         private void InitializeVariables()
@@ -546,37 +545,24 @@ namespace PowerBusiness
                 // Grid0.Columns.Item("Indeks").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
                 // this.Grid0.Item.Width = 1200;
                 // Grid0.Columns.Item("ItemCode").Type = SAPbouiCOM.BoGridColumnType.gct_CheckBox; 
-               // authentication.returnDepartment(Grid2);
+                // authentication.returnDepartment(Grid2);
 
+             
                 Application.SBO_Application.ActivateMenuItem("ff");
+                Application.SBO_Application.Forms.Item("F_21").Select();
 
             }
 
             catch (Exception e)
             {
-                Application.SBO_Application.MessageBox(e.Message);
                 InfoBoxes.UseMessageBox(e.Message);
             }
 
         }
 
-        private void HelpButton_ClickBefore(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
-        {
-            BubbleEvent = true;
-            String msg1 = "Wartość zaznaczonej komórki zostaje automatycznie skopiowana." + "\n";
-            String msg2 = "Kliknięcie 2 razy w wybrany filtr wklei wartość skopiowanej wcześniej komórki." + "\n";
-            String msg3 = "Kliknięcie 2 razy na dowolną komórkę w określonej kolumnie posortuje ją." + "\n";
-
-            Application.SBO_Application.MessageBox(msg1 + msg2 + msg3);
-
-        }
-
-
-
         private void CountTotal(object sboObject, SAPbouiCOM.SBOItemEventArg pVal, out bool BubbleEvent)
         {
             BubbleEvent = true;
-           // Application.SBO_Application.MessageBox(cntObj.countTotal(Grid0, 8).ToString());
             InfoBoxes.UseMessageBox(cntObj.countTotal(Grid0, 8));
         }
 
