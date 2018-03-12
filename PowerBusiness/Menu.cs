@@ -13,20 +13,13 @@ namespace PowerBusiness
         {
             SAPbouiCOM.Menus oMenus;
             SAPbouiCOM.MenuItem oMenuItem;
+            SAPbouiCOM.MenuCreationParams oCreationPackage;
             MenuModifications modifications = new MenuModifications();
 
             oMenus = Application.SBO_Application.Menus;
 
-            SAPbouiCOM.MenuCreationParams oCreationPackage = null;
-            oCreationPackage = ((SAPbouiCOM.MenuCreationParams)(Application.SBO_Application.CreateObject(SAPbouiCOM.BoCreatableObjectType.cot_MenuCreationParams)));
+            oCreationPackage = modifications.addMenu("PowerBusiness", "Electropoli Poland");         
             oMenuItem = Application.SBO_Application.Menus.Item("43520"); // moudles'
-
-            oCreationPackage.Type = SAPbouiCOM.BoMenuType.mt_POPUP;
-            oCreationPackage.UniqueID = "PowerBusiness";
-            oCreationPackage.String = "Electropoli Poland";
-            oCreationPackage.Enabled = true;
-            oCreationPackage.Position = -1;
-
             oMenus = oMenuItem.SubMenus;
 
             try

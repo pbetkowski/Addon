@@ -15,21 +15,14 @@ namespace PowerBusiness.Engine
             oMenus.AddEx(oCreationPackage);
         }
 
-        public SAPbouiCOM.MenuCreationParams returnOnCreationPackage(SAPbouiCOM.Menus oMenus, SAPbouiCOM.MenuItem oMenuItem)
+        public SAPbouiCOM.MenuCreationParams addMenu(String uniqueID, String name)
         {
-            oMenus = null;
-            oMenuItem = null;
-            oMenus = Application.SBO_Application.Menus;
-            SAPbouiCOM.MenuCreationParams oCreationPackage = null;
-            oCreationPackage = ((SAPbouiCOM.MenuCreationParams)(Application.SBO_Application.CreateObject(SAPbouiCOM.BoCreatableObjectType.cot_MenuCreationParams)));
-            oMenuItem = Application.SBO_Application.Menus.Item("43520"); // moudles'
-
+            SAPbouiCOM.MenuCreationParams oCreationPackage = ((SAPbouiCOM.MenuCreationParams)(Application.SBO_Application.CreateObject(SAPbouiCOM.BoCreatableObjectType.cot_MenuCreationParams)));
             oCreationPackage.Type = SAPbouiCOM.BoMenuType.mt_POPUP;
-            oCreationPackage.UniqueID = "PowerBusiness";
-            oCreationPackage.String = "Electropoli Poland";
+            oCreationPackage.UniqueID = uniqueID;
+            oCreationPackage.String = name;
             oCreationPackage.Enabled = true;
             oCreationPackage.Position = -1;
-            oMenus = oMenuItem.SubMenus;
             return oCreationPackage;
         }
     }
