@@ -74,6 +74,7 @@
     <Compile Include="ReportClasses\SqlClass.cs" />
     <Compile Include="Shared\CountTotal.cs" />
     <Compile Include="Shared\InfoBoxes.cs" />
+    <Compile Include="Shared\UdoModifications.cs" />
     <None Include="DeliveryNote.b1f">
       <FormCategory>SystemForm</FormCategory>
     </None>
