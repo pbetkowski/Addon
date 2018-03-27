@@ -10,80 +10,39 @@ namespace PowerBusiness.Shared
         public void ColourMatrix(SAPbouiCOM.Matrix matrix, SAPbouiCOM.EditText ed1, SAPbouiCOM.EditText ed2, String columnId)
         {
             int rowNumber = matrix.RowCount;
-            String s1 = "";
-            String s2 = "";
-            int cnt = 1;
-            int cnt2 = 0;
-            for (int i = 0; i < rowNumber; i++)
+            int color1 = 16777215;
+            int color2 = 16766852;
+            int currentColor = color1;
+
+            matrix.CommonSetting.SetRowBackColor(1, color1);
+
+            for (int i = 2; i < rowNumber; i++)
             {
+                ed1 = (SAPbouiCOM.EditText)matrix.Columns.Item(columnId).Cells.Item(i - 1).Specific;
+                ed2 = (SAPbouiCOM.EditText)matrix.Columns.Item(columnId).Cells.Item(i).Specific;
+                String value = ed1.Value;
+                String value2 = ed2.Value;
 
-                matrix.CommonSetting.SetRowBackColor(i + 1, 16777215);        
-            }
-
-            for (int i = 0; i < rowNumber; i++)
-            {
-                ed1 = (SAPbouiCOM.EditText)matrix.Columns.Item(columnId).Cells.Item(i + 1).Specific;
-                s1 = ed1.Value;
-                if (i == 0)
+                if (value.Equals(value2))
                 {
-                    matrix.CommonSetting.SetRowBackColor(i + 1, 16777215);
+                    matrix.CommonSetting.SetRowBackColor(i, currentColor);
                 }
-
-                else if (i > 0)
+                else
                 {
-                    ed2 = (SAPbouiCOM.EditText)matrix.Columns.Item(columnId).Cells.Item(i).Specific;
+                    //currentColor = currentColor == color1 ? color2 : color1;
 
-                    s1 = ed1.Value;
-                    s2 = ed2.Value;
-
-                    if (s1.Equals(s2) && cnt >= 2)
+                    if (currentColor == color1)
                     {
-
-                        matrix.CommonSetting.SetRowBackColor(i, 16766852);
-                        matrix.CommonSetting.SetRowBackColor(i + 1, 16766852);
-                        cnt = 1;
-
+                        currentColor = color2;
                     }
 
-                    else if (s1.Equals(s2) && cnt < 2)
+                    else
                     {
-
-                        matrix.CommonSetting.SetRowBackColor(i, 16777215);
-                        matrix.CommonSetting.SetRowBackColor(i + 1, 16777215);
-                        cnt++; cnt2 = 0;
-
+                        currentColor = color1;
                     }
 
-                    else if (!s1.Equals(s2) & cnt2 < 1)
-                    {
-                        matrix.CommonSetting.SetRowBackColor(i + 1, 45555);
-                        cnt2++;
-                    }
-
-                    else if (!s1.Equals(s2) & cnt2 >= 1)
-                    {
-                        matrix.CommonSetting.SetRowBackColor(i + 1, 7666766);
-                        cnt2 = 0;
-                    }
+                    matrix.CommonSetting.SetRowBackColor(i, currentColor);
                 }
-
-
-                //old version
-                //    for (int i = 0; i < rowNumber; i++)
-                //    {
-                //        EditText0 = (SAPbouiCOM.EditText)Matrix0.Columns.Item("C_0_3").Cells.Item(i + 1).Specific;
-
-                //        String asd = EditText0.Value;
-
-                //        int color = Int32.Parse(asd);
-
-                //        if (color % 2 == 0)
-                //        {
-                //            Matrix0.CommonSetting.SetRowBackColor(i + 1, 16766852);  //kolorki
-                //        }
-                //    }
-
-                //}
 
             }
         }
